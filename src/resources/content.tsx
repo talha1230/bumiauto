@@ -1,40 +1,40 @@
-import { About, Blog, Gallery, Home, Newsletter, Person, Social, Work } from "@/types";
+import type { About, Blog, Gallery, Home, Newsletter, Person, Social, Work } from "@/types";
 import { Line, Logo, Row, Text } from "@once-ui-system/core";
 
 const person: Person = {
-  firstName: "Selene",
-  lastName: "Yu",
-  name: `Selene Yu`,
-  role: "Design Engineer",
-  avatar: "/images/avatar.jpg",
-  email: "example@gmail.com",
-  location: "Asia/Jakarta", // Expecting the IANA time zone identifier, e.g., 'Europe/Vienna'
-  languages: ["English", "Bahasa"], // optional: Leave the array empty if you don't want to display languages
+  firstName: "BumiAuto",
+  lastName: "Team",
+  name: "BumiAuto",
+  role: "Fintech Microloan Solutions",
+  avatar: "/images/bumiauto-logo.png",
+  email: "info@bumiauto.com.my",
+  location: "Asia/Kuala_Lumpur",
+  languages: ["English", "Bahasa Malaysia"],
 };
 
 const newsletter: Newsletter = {
   display: true,
-  title: <>Subscribe to {person.firstName}'s Newsletter</>,
-  description: <>My weekly newsletter about creativity and engineering</>,
+  title: <>Get the Latest Updates from BumiAuto</>,
+  description: <>Subscribe for news about financing options, special offers, and financial tips</>,
 };
 
 const social: Social = [
   // Links are automatically displayed.
   // Import new icons in /once-ui/icons.ts
   {
-    name: "GitHub",
-    icon: "github",
-    link: "https://github.com/once-ui-system",
-  },
-  {
     name: "LinkedIn",
     icon: "linkedin",
-    link: "https://www.linkedin.com/company/once-ui/",
+    link: "https://www.linkedin.com/company/bumiauto/",
   },
   {
-    name: "Threads",
-    icon: "threads",
-    link: "https://www.threads.com/@once_ui",
+    name: "Facebook",
+    icon: "facebook",
+    link: "https://www.facebook.com/bumiauto",
+  },
+  {
+    name: "WhatsApp",
+    icon: "whatsapp",
+    link: `https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}`,
   },
   {
     name: "Email",
@@ -47,32 +47,24 @@ const home: Home = {
   path: "/",
   image: "/images/og/home.jpg",
   label: "Home",
-  title: `${person.name}'s Portfolio`,
-  description: `Portfolio website showcasing my work as a ${person.role}`,
-  headline: <>Building bridges between design and code</>,
+  title: "BumiAuto - Motorcycle Microloans & Consumer Financing Malaysia",
+  description: "Redefining microloans and financial access in Malaysia. Get instant motorcycle loans and consumer durable financing with flexible repayment plans.",
+  headline: <>Redefining Microloans and Financial Access</>,
   featured: {
     display: true,
     title: (
       <Row gap="12" vertical="center">
-        <strong className="ml-4">Once UI</strong>{" "}
-        <Line background="brand-alpha-strong" vert height="20" />
         <Text marginRight="4" onBackground="brand-medium">
-          Featured work
+          ✓ Fast Approval • Flexible Terms • Trusted Partner
         </Text>
       </Row>
     ),
-    href: "/work/building-once-ui-a-customizable-design-system",
+    href: "/services",
   },
   subline: (
     <>
-      I'm Selene, a design engineer at{" "}
-      <Logo
-        dark
-        icon="/trademarks/wordmark-dark.svg"
-        style={{ display: "inline-flex", top: "0.25em", marginLeft: "-0.25em" }}
-      />
-      , where I craft intuitive
-      <br /> user experiences. After hours, I build my own projects.
+      Empowering Malaysians with accessible financing for motorcycles and consumer durables.
+      <br /> Fast approval, flexible repayment plans, and dedicated support every step of the way.
     </>
   ),
 };
@@ -80,8 +72,8 @@ const home: Home = {
 const about: About = {
   path: "/about",
   label: "About",
-  title: `About – ${person.name}`,
-  description: `Meet ${person.name}, ${person.role} from ${person.location}`,
+  title: `About BumiAuto – ${person.role}`,
+  description: `Learn about BumiAuto, Malaysia's trusted fintech company specializing in motorcycle microloans and consumer financing solutions.`,
   tableOfContent: {
     display: true,
     subItems: false,
@@ -90,61 +82,41 @@ const about: About = {
     display: true,
   },
   calendar: {
-    display: true,
+    display: false,
     link: "https://cal.com",
   },
   intro: {
     display: true,
-    title: "Introduction",
+    title: "Our Mission",
     description: (
       <>
-        Selene is a Jakarta-based design engineer with a passion for transforming complex challenges
-        into simple, elegant design solutions. Her work spans digital interfaces, interactive
-        experiences, and the convergence of design and technology.
+        BumiAuto is a Malaysia-based fintech company dedicated to making financial access easier for everyone.
+        We specialize in providing microloans for motorcycles and consumer durables, helping Malaysians achieve
+        their mobility and lifestyle goals with flexible, affordable financing solutions.
       </>
     ),
   },
   work: {
     display: true, // set to false to hide this section
-    title: "Work Experience",
+    title: "Our Services",
     experiences: [
       {
-        company: "FLY",
-        timeframe: "2022 - Present",
-        role: "Senior Design Engineer",
+        company: "Motorcycle Microloans",
+        timeframe: "Core Service",
+        role: "Fast & Flexible Financing",
         achievements: [
-          <>
-            Redesigned the UI/UX for the FLY platform, resulting in a 20% increase in user
-            engagement and 30% faster load times.
-          </>,
-          <>
-            Spearheaded the integration of AI tools into design workflows, enabling designers to
-            iterate 50% faster.
-          </>,
+          "Quick approval process with minimal documentation required for qualified applicants.",
+          "Competitive interest rates and flexible repayment terms tailored to your income cycle.",
         ],
-        images: [
-          // optional: leave the array empty if you don't want to display images
-          {
-            src: "/images/projects/project-01/cover-01.jpg",
-            alt: "Once UI Project",
-            width: 16,
-            height: 9,
-          },
-        ],
+        images: [],
       },
       {
-        company: "Creativ3",
-        timeframe: "2018 - 2022",
-        role: "Lead Designer",
+        company: "Consumer Durable Financing",
+        timeframe: "Core Service",
+        role: "Affordable Payment Plans",
         achievements: [
-          <>
-            Developed a design system that unified the brand across multiple platforms, improving
-            design consistency by 40%.
-          </>,
-          <>
-            Led a cross-functional team to launch a new product line, contributing to a 15% increase
-            in overall company revenue.
-          </>,
+          "Finance home appliances, electronics, and other essential items with easy monthly installments.",
+          "No hidden fees and transparent pricing to help you budget with confidence.",
         ],
         images: [],
       },
@@ -152,105 +124,77 @@ const about: About = {
   },
   studies: {
     display: true, // set to false to hide this section
-    title: "Studies",
+    title: "Why Choose BumiAuto",
     institutions: [
       {
-        name: "University of Jakarta",
-        description: <>Studied software engineering.</>,
+        name: "Customer-Centric Approach",
+        description: <>We prioritize your financial well-being with personalized service and support.</>,
       },
       {
-        name: "Build the Future",
-        description: <>Studied online marketing and personal branding.</>,
+        name: "Regulatory Compliance",
+        description: <>Licensed and compliant with Malaysian financial regulations for your peace of mind.</>,
+      },
+      {
+        name: "Fast & Transparent",
+        description: <>Quick approvals, clear terms, and no hidden charges - what you see is what you get.</>,
       },
     ],
   },
   technical: {
     display: true, // set to false to hide this section
-    title: "Technical skills",
+    title: "How It Works",
     skills: [
       {
-        title: "Figma",
+        title: "1. Apply Online",
         description: (
-          <>Able to prototype in Figma with Once UI with unnatural speed.</>
+          <>Fill out our simple online form with your basic information and loan requirements.</>
         ),
-        tags: [
-          {
-            name: "Figma",
-            icon: "figma",
-          },
-        ],
-        // optional: leave the array empty if you don't want to display images
-        images: [
-          {
-            src: "/images/projects/project-01/cover-02.jpg",
-            alt: "Project image",
-            width: 16,
-            height: 9,
-          },
-          {
-            src: "/images/projects/project-01/cover-03.jpg",
-            alt: "Project image",
-            width: 16,
-            height: 9,
-          },
-        ],
+        tags: [],
+        images: [],
       },
       {
-        title: "Next.js",
+        title: "2. Quick Approval",
         description: (
-          <>Building next gen apps with Next.js + Once UI + Supabase.</>
+          <>Our team reviews your application and provides approval within 24-48 hours.</>
         ),
-        tags: [
-          {
-            name: "JavaScript",
-            icon: "javascript",
-          },
-          {
-            name: "Next.js",
-            icon: "nextjs",
-          },
-          {
-            name: "Supabase",
-            icon: "supabase",
-          },
-        ],
-        // optional: leave the array empty if you don't want to display images
-        images: [
-          {
-            src: "/images/projects/project-01/cover-04.jpg",
-            alt: "Project image",
-            width: 16,
-            height: 9,
-          },
-        ],
-      },  
+        tags: [],
+        images: [],
+      },
+      {
+        title: "3. Get Funded",
+        description: (
+          <>Once approved, receive your funds quickly and start enjoying your purchase.</>
+        ),
+        tags: [],
+        images: [],
+      },
     ],
   },
 };
 
 const blog: Blog = {
   path: "/blog",
-  label: "Blog",
-  title: "Writing about design and tech...",
-  description: `Read what ${person.name} has been up to recently`,
+  label: "Resources",
+  title: "Financial Tips & News",
+  description: "Stay informed with the latest financing tips, industry news, and helpful guides from BumiAuto",
   // Create new blog posts by adding a new .mdx file to app/blog/posts
   // All posts will be listed on the /blog route
 };
 
 const work: Work = {
-  path: "/work",
-  label: "Work",
-  title: `Projects – ${person.name}`,
-  description: `Design and dev projects by ${person.name}`,
-  // Create new project pages by adding a new .mdx file to app/blog/posts
-  // All projects will be listed on the /home and /work routes
+  path: "/services",
+  label: "Services",
+  title: "Our Financing Solutions",
+  description: "Explore BumiAuto's range of microloan and financing services designed for Malaysians",
+  // Create new service pages by adding a new .mdx file to app/work/projects
+  // All services will be listed on the /home and /services routes
 };
 
 const gallery: Gallery = {
   path: "/gallery",
   label: "Gallery",
-  title: `Photo gallery – ${person.name}`,
-  description: `A photo collection by ${person.name}`,
+  title: "Success Stories – BumiAuto",
+  description: "See how BumiAuto has helped Malaysians achieve their goals",
   // Images by https://lorant.one
   // These are placeholder images, replace with your own
   images: [

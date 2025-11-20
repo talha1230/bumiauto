@@ -8,3 +8,8 @@ export { Providers } from "@/components/Providers";
 export { ScrollToHash } from "@/components/ScrollToHash";
 export { ThemeToggle } from "@/components/ThemeToggle";
 export { CustomMDX } from "@/components/mdx";
+
+// BumiAuto components
+export { LoanInquiryForm } from "@/components/forms/LoanInquiryForm";
+export { ContactForm } from "@/components/forms/ContactForm";
+export { WhatsAppButton } from "@/components/WhatsAppButton";

@@ -4,16 +4,15 @@ import "@/resources/custom.css";
 
 import classNames from "classnames";
 
+import type { opacity, SpacingToken } from "@once-ui-system/core";
 import {
   Background,
   Column,
   Flex,
   Meta,
-  opacity,
   RevealFx,
-  SpacingToken,
 } from "@once-ui-system/core";
-import { Footer, Header, RouteGuard, Providers } from "@/components";
+import { Footer, Header, RouteGuard, Providers, WhatsAppButton } from "@/components";
 import { baseURL, effects, fonts, style, dataStyle, home } from "@/resources";
 
 export async function generateMetadata() {
@@ -108,7 +107,7 @@ export default async function RootLayout({
           as="body"
           background="page"
           fillWidth
-          style={{ minHeight: "100vh" }}
+          style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}
           margin="0"
           padding="0"
           horizontal="center"
@@ -157,12 +156,21 @@ export default async function RootLayout({
           </RevealFx>
           <Flex fillWidth minHeight="16" s={{ hide: true }} />
           <Header />
-          <Flex zIndex={0} fillWidth padding="l" horizontal="center" flex={1}>
-            <Flex horizontal="center" fillWidth minHeight="0">
+          <Flex 
+            zIndex={0} 
+            fillWidth 
+            paddingX="l" 
+            paddingY="xl"
+            horizontal="center" 
+            flex={1}
+            style={{ width: "100%", maxWidth: "100vw", overflowX: "hidden" }}
+          >
+            <Flex horizontal="center" fillWidth minHeight="0" style={{ width: "100%", maxWidth: "100%" }}>
               <RouteGuard>{children}</RouteGuard>
             </Flex>
           </Flex>
           <Footer />
+          <WhatsAppButton />
         </Column>
       </Providers>
     </Flex>

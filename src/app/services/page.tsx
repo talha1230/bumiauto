@@ -1,17 +1,17 @@
 import { Column, Heading, Meta, Text, Flex } from "@once-ui-system/core";
-import { baseURL, blog } from "@/resources";
+import { baseURL, work } from "@/resources";
 
 export async function generateMetadata() {
   return Meta.generate({
-    title: blog.title,
-    description: blog.description,
+    title: work.title,
+    description: work.description,
     baseURL: baseURL,
-    image: `/api/og/generate?title=${encodeURIComponent(blog.title)}`,
-    path: blog.path,
+    image: `/api/og/generate?title=${encodeURIComponent(work.title)}`,
+    path: work.path,
   });
 }
 
-export default function Blog() {
+export default function Work() {
   return (
     <Flex
       fillWidth
@@ -23,10 +23,10 @@ export default function Blog() {
     >
       <Column gap="m" horizontal="center">
         <Heading wrap="balance" variant="display-strong-l">
-          Blog
+          Our Services
         </Heading>
         <Text variant="body-default-l" onBackground="neutral-weak" wrap="balance">
-          Articles and updates coming soon.
+          Explore our range of solutions designed to help you succeed.
         </Text>
       </Column>
     </Flex>
