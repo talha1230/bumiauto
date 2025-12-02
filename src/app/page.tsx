@@ -8,7 +8,7 @@ export default function Home() {
       paddingTop="l"
       paddingX="l"
       direction="column"
-      alignItems="center"
+      horizontal="center"
       flex={1}
     >
       <Flex
@@ -19,13 +19,13 @@ export default function Home() {
         minHeight="0"
         maxWidth={68}
         direction="column"
-        alignItems="center"
+        horizontal="center"
         flex={1}
       >
         <Flex
           as="main"
           direction="column"
-          justifyContent="center"
+          vertical="center"
           fillWidth
           fillHeight
           padding="l"
@@ -34,8 +34,8 @@ export default function Home() {
           <Column
             fillWidth
             gap="32"
-            alignItems="center"
-            textAlign="center"
+            horizontal="center"
+            align="center"
           >
             <RevealFx translateY="4">
               <Heading wrap="balance" variant="display-strong-l">
@@ -43,7 +43,7 @@ export default function Home() {
               </Heading>
             </RevealFx>
             <RevealFx translateY="8" delay={0.2}>
-              <Text wrap="balance" onBackground="neutral-weak" variant="body-default-l" maxWidth={48}>
+              <Text wrap="balance" onBackground="neutral-weak" variant="body-default-l" style={{ maxWidth: "48rem" }}>
                 Start building your dream website with this clean template.
               </Text>
             </RevealFx>
