@@ -191,8 +191,8 @@ export default function About() {
         background="neutral-alpha-weak"
       >
         <Column maxWidth="l" fillWidth gap="48">
-          <Row fillWidth wrap gap="48" vertical="center">
-            <Column gap="24" style={{ flex: "1 1 400px" }}>
+          <div className="service-detail-grid">
+            <Column gap="24">
               <RevealFx translateY="8">
                 <Text variant="label-strong-s" onBackground="brand-medium">
                   OUR MISSION
@@ -221,7 +221,7 @@ export default function About() {
               </RevealFx>
             </Column>
 
-            <Column gap="16" style={{ flex: "1 1 300px" }}>
+            <Column gap="16">
               <RevealFx translateY="8" delay={0.2}>
                 <Column
                   padding="24"
@@ -229,6 +229,8 @@ export default function About() {
                   background="page"
                   border="neutral-alpha-weak"
                   gap="12"
+                  fillWidth
+                  className="card"
                 >
                   <Row gap="12" vertical="center">
                     <Icon name="target" size="m" onBackground="brand-medium" />
@@ -248,6 +250,8 @@ export default function About() {
                   background="page"
                   border="neutral-alpha-weak"
                   gap="12"
+                  fillWidth
+                  className="card"
                 >
                   <Row gap="12" vertical="center">
                     <Icon name="mapPin" size="m" onBackground="brand-medium" />
@@ -260,7 +264,7 @@ export default function About() {
                 </Column>
               </RevealFx>
             </Column>
-          </Row>
+          </div>
         </Column>
       </Flex>
 
@@ -283,7 +287,7 @@ export default function About() {
             </Heading>
           </Column>
 
-          <Row fillWidth wrap gap="24" horizontal="center">
+          <div className="grid-cards">
             {values.map((value, index) => (
               <RevealFx key={value.title} translateY="16" delay={index * 0.1}>
                 <Column
@@ -292,7 +296,8 @@ export default function About() {
                   radius="l"
                   border="neutral-alpha-weak"
                   background="surface"
-                  style={{ flex: "1 1 280px", maxWidth: "320px" }}
+                  fillWidth
+                  className="card"
                 >
                   <Flex
                     width="48"
@@ -313,7 +318,7 @@ export default function About() {
                 </Column>
               </RevealFx>
             ))}
-          </Row>
+          </div>
         </Column>
       </Flex>
 
@@ -346,7 +351,7 @@ export default function About() {
             </Text>
           </Column>
 
-          <Row fillWidth wrap gap="24" horizontal="center">
+          <div className="grid-cards-4">
             {team.map((member, index) => (
               <RevealFx key={member.name} translateY="16" delay={index * 0.1}>
                 <Column
@@ -357,7 +362,8 @@ export default function About() {
                   border="neutral-alpha-weak"
                   horizontal="center"
                   align="center"
-                  style={{ flex: "1 1 240px", maxWidth: "280px" }}
+                  fillWidth
+                  className="card"
                 >
                   <Flex
                     width="64"
@@ -385,7 +391,7 @@ export default function About() {
                 </Column>
               </RevealFx>
             ))}
-          </Row>
+          </div>
         </Column>
       </Flex>
 

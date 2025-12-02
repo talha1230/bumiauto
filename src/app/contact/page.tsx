@@ -127,10 +127,10 @@ export default function Contact() {
         paddingY="l"
       >
         <Column maxWidth="l" fillWidth>
-          <Row fillWidth wrap gap="16" horizontal="center">
+          <div className="contact-methods-grid">
             {contactMethods.map((method, index) => (
               <RevealFx key={method.label} translateY="16" delay={index * 0.1}>
-                <Link href={method.href} style={{ textDecoration: "none" }}>
+                <Link href={method.href} style={{ textDecoration: "none", width: "100%" }}>
                   <Column
                     gap="12"
                     padding="24"
@@ -139,8 +139,9 @@ export default function Contact() {
                     background="surface"
                     horizontal="center"
                     align="center"
+                    fillWidth
+                    className="card"
                     style={{
-                      minWidth: "200px",
                       cursor: "pointer",
                       transition: "all 0.2s ease",
                     }}
@@ -172,7 +173,7 @@ export default function Contact() {
                 </Link>
               </RevealFx>
             ))}
-          </Row>
+          </div>
         </Column>
       </Flex>
 
@@ -187,7 +188,7 @@ export default function Contact() {
         background="neutral-alpha-weak"
       >
         <Column maxWidth="l" fillWidth gap="48">
-          <Row fillWidth wrap gap="48">
+          <div className="grid-cards-2">
             {/* Loan Application Form */}
             <Column
               gap="24"
@@ -195,7 +196,8 @@ export default function Contact() {
               radius="l"
               background="page"
               border="neutral-alpha-weak"
-              style={{ flex: "1 1 400px" }}
+              fillWidth
+              className="card"
             >
               <RevealFx translateY="8">
                 <Column gap="8">
@@ -221,7 +223,8 @@ export default function Contact() {
               radius="l"
               background="page"
               border="neutral-alpha-weak"
-              style={{ flex: "1 1 400px" }}
+              fillWidth
+              className="card"
             >
               <RevealFx translateY="8">
                 <Column gap="8">
@@ -239,7 +242,7 @@ export default function Contact() {
                 <ContactForm />
               </RevealFx>
             </Column>
-          </Row>
+          </div>
         </Column>
       </Flex>
 
@@ -253,7 +256,7 @@ export default function Contact() {
         paddingY="xl"
       >
         <Column maxWidth="m" fillWidth gap="48">
-          <Row fillWidth wrap gap="48" horizontal="center">
+          <div className="grid-cards-2">
             {/* Office Hours */}
             <Column
               gap="24"
@@ -261,7 +264,8 @@ export default function Contact() {
               radius="l"
               border="neutral-alpha-weak"
               background="surface"
-              style={{ flex: "1 1 300px", maxWidth: "400px" }}
+              fillWidth
+              className="card"
             >
               <RevealFx translateY="8">
                 <Row gap="12" vertical="center">
@@ -290,7 +294,8 @@ export default function Contact() {
               radius="l"
               border="neutral-alpha-weak"
               background="surface"
-              style={{ flex: "1 1 300px", maxWidth: "400px" }}
+              fillWidth
+              className="card"
             >
               <RevealFx translateY="8">
                 <Row gap="12" vertical="center">
@@ -331,7 +336,7 @@ export default function Contact() {
                 </RevealFx>
               </Column>
             </Column>
-          </Row>
+          </div>
         </Column>
       </Flex>
 

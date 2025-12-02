@@ -188,102 +188,102 @@ export default function Services() {
           background={serviceIndex % 2 === 0 ? "neutral-alpha-weak" : "page"}
         >
           <Column maxWidth="l" fillWidth gap="48">
-            <Row fillWidth wrap gap="48" vertical="start">
-              {/* Service Info */}
-              <Column gap="24" style={{ flex: "1 1 400px" }}>
-                <RevealFx translateY="8">
-                  <Flex
-                    width="64"
-                    height="64"
-                    radius="l"
-                    background="brand-alpha-weak"
-                    horizontal="center"
-                    vertical="center"
-                  >
-                    <Icon name={service.icon} size="l" onBackground="brand-medium" />
-                  </Flex>
-                </RevealFx>
-                <RevealFx translateY="12" delay={0.1}>
-                  <Column gap="8">
-                    <Text variant="label-default-s" onBackground="brand-medium">
-                      {service.subtitle}
-                    </Text>
-                    <Heading variant="display-strong-m">{service.title}</Heading>
-                  </Column>
-                </RevealFx>
-                <RevealFx translateY="16" delay={0.2}>
-                  <Text variant="body-default-l" onBackground="neutral-weak">
-                    {service.description}
+          <div className="service-detail-grid">
+            {/* Service Info */}
+            <Column gap="24">
+              <RevealFx translateY="8">
+                <Flex
+                  width="64"
+                  height="64"
+                  radius="l"
+                  background="brand-alpha-weak"
+                  horizontal="center"
+                  vertical="center"
+                >
+                  <Icon name={service.icon} size="l" onBackground="brand-medium" />
+                </Flex>
+              </RevealFx>
+              <RevealFx translateY="12" delay={0.1}>
+                <Column gap="8">
+                  <Text variant="label-default-s" onBackground="brand-medium">
+                    {service.subtitle}
                   </Text>
-                </RevealFx>
+                  <Heading variant="display-strong-m">{service.title}</Heading>
+                </Column>
+              </RevealFx>
+              <RevealFx translateY="16" delay={0.2}>
+                <Text variant="body-default-l" onBackground="neutral-weak">
+                  {service.description}
+                </Text>
+              </RevealFx>
 
-                {/* Benefits */}
-                <RevealFx translateY="20" delay={0.3}>
-                  <Row gap="16" wrap>
-                    {service.benefits.map((benefit) => (
-                      <Row
-                        key={benefit.text}
-                        gap="8"
+              {/* Benefits */}
+              <RevealFx translateY="20" delay={0.3}>
+                <Row gap="16" wrap>
+                  {service.benefits.map((benefit) => (
+                    <Row
+                      key={benefit.text}
+                      gap="8"
+                      vertical="center"
+                      paddingX="12"
+                      paddingY="8"
+                      radius="m"
+                      background="surface"
+                      border="neutral-alpha-weak"
+                    >
+                      <Icon
+                        name={benefit.icon}
+                        size="s"
+                        onBackground="brand-medium"
+                      />
+                      <Text variant="body-default-s">{benefit.text}</Text>
+                    </Row>
+                  ))}
+                </Row>
+              </RevealFx>
+
+              <RevealFx translateY="24" delay={0.4}>
+                <Button href="/contact" variant="primary" size="l">
+                  Apply for {service.title}
+                </Button>
+              </RevealFx>
+            </Column>
+
+            {/* Features List */}
+            <Column gap="16">
+              <RevealFx translateY="8" delay={0.2}>
+                <Text variant="heading-strong-m">Features & Terms</Text>
+              </RevealFx>
+              <Column gap="12">
+                {service.features.map((feature, index) => (
+                  <RevealFx
+                    key={feature}
+                    translateY="8"
+                    delay={0.3 + index * 0.05}
+                  >
+                    <Row gap="12" vertical="center">
+                      <Flex
+                        width="24"
+                        height="24"
+                        radius="full"
+                        background="brand-alpha-weak"
+                        horizontal="center"
                         vertical="center"
-                        paddingX="12"
-                        paddingY="8"
-                        radius="m"
-                        background="surface"
-                        border="neutral-alpha-weak"
+                        style={{ flexShrink: 0 }}
                       >
                         <Icon
-                          name={benefit.icon}
-                          size="s"
+                          name="check"
+                          size="xs"
                           onBackground="brand-medium"
                         />
-                        <Text variant="body-default-s">{benefit.text}</Text>
-                      </Row>
-                    ))}
-                  </Row>
-                </RevealFx>
-
-                <RevealFx translateY="24" delay={0.4}>
-                  <Button href="/contact" variant="primary" size="l">
-                    Apply for {service.title}
-                  </Button>
-                </RevealFx>
+                      </Flex>
+                      <Text variant="body-default-m">{feature}</Text>
+                    </Row>
+                  </RevealFx>
+                ))}
               </Column>
-
-              {/* Features List */}
-              <Column gap="16" style={{ flex: "1 1 350px" }}>
-                <RevealFx translateY="8" delay={0.2}>
-                  <Text variant="heading-strong-m">Features & Terms</Text>
-                </RevealFx>
-                <Column gap="12">
-                  {service.features.map((feature, index) => (
-                    <RevealFx
-                      key={feature}
-                      translateY="8"
-                      delay={0.3 + index * 0.05}
-                    >
-                      <Row gap="12" vertical="center">
-                        <Flex
-                          width="24"
-                          height="24"
-                          radius="full"
-                          background="brand-alpha-weak"
-                          horizontal="center"
-                          vertical="center"
-                          style={{ flexShrink: 0 }}
-                        >
-                          <Icon
-                            name="check"
-                            size="xs"
-                            onBackground="brand-medium"
-                          />
-                        </Flex>
-                        <Text variant="body-default-m">{feature}</Text>
-                      </Row>
-                    </RevealFx>
-                  ))}
-                </Column>
-              </Column>
-            </Row>
+            </Column>
+          </div>
           </Column>
         </Flex>
       ))}
@@ -316,7 +316,7 @@ export default function Services() {
             </Text>
           </Column>
 
-          <Row fillWidth wrap gap="24" horizontal="center">
+          <div className="grid-cards-4">
             {eligibility.map((item, index) => (
               <RevealFx key={item.title} translateY="16" delay={index * 0.1}>
                 <Column
@@ -327,7 +327,8 @@ export default function Services() {
                   background="surface"
                   horizontal="center"
                   align="center"
-                  style={{ flex: "1 1 220px", maxWidth: "280px" }}
+                  fillWidth
+                  className="card"
                 >
                   <Flex
                     width="48"
@@ -352,7 +353,7 @@ export default function Services() {
                 </Column>
               </RevealFx>
             ))}
-          </Row>
+          </div>
         </Column>
       </Flex>
 
@@ -377,7 +378,7 @@ export default function Services() {
             </Heading>
           </Column>
 
-          <Row fillWidth wrap gap="24" horizontal="center">
+          <div className="grid-cards-4">
             {processSteps.map((step, index) => (
               <RevealFx key={step.step} translateY="16" delay={index * 0.1}>
                 <Column
@@ -385,7 +386,7 @@ export default function Services() {
                   padding="24"
                   horizontal="center"
                   align="center"
-                  style={{ flex: "1 1 220px", maxWidth: "280px" }}
+                  fillWidth
                 >
                   <Flex
                     width="56"
@@ -412,7 +413,7 @@ export default function Services() {
                 </Column>
               </RevealFx>
             ))}
-          </Row>
+          </div>
         </Column>
       </Flex>
 
@@ -443,7 +444,7 @@ export default function Services() {
             </Text>
           </Column>
 
-          <Row fillWidth wrap gap="24" horizontal="center">
+          <div className="grid-cards-4">
             {partners.map((partner, index) => (
               <RevealFx key={partner.name} translateY="16" delay={index * 0.1}>
                 <Column
@@ -454,7 +455,8 @@ export default function Services() {
                   background="surface"
                   horizontal="center"
                   align="center"
-                  style={{ flex: "1 1 200px", maxWidth: "240px" }}
+                  fillWidth
+                  className="card"
                 >
                   <Text variant="display-strong-l" onBackground="brand-strong">
                     {partner.count}
@@ -465,7 +467,7 @@ export default function Services() {
                 </Column>
               </RevealFx>
             ))}
-          </Row>
+          </div>
         </Column>
       </Flex>
 

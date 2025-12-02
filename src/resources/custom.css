@@ -32,6 +32,233 @@ footer {
   z-index: 10;
 }
 
+/* ===== RESPONSIVE GRID SYSTEM ===== */
+
+/* Grid container for cards */
+.grid-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  width: 100%;
+  justify-items: center;
+}
+
+.grid-cards-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  width: 100%;
+  justify-items: center;
+}
+
+.grid-cards-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  width: 100%;
+  justify-items: center;
+}
+
+.grid-cards-4 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+  width: 100%;
+  justify-items: center;
+}
+
+/* Stats grid - horizontal on desktop */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  width: 100%;
+}
+
+/* Desktop optimizations - min 1024px */
+@media (min-width: 1024px) {
+  .grid-cards {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .grid-cards-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .grid-cards-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .grid-cards-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  /* Two column layout for service details */
+  .service-detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+}
+
+/* Tablet - 768px to 1023px */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .grid-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .grid-cards-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .grid-cards-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .grid-cards-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile - below 768px */
+@media (max-width: 767px) {
+  .grid-cards,
+  .grid-cards-2,
+  .grid-cards-3,
+  .grid-cards-4 {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  
+  .service-detail-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+}
+
+/* ===== CARD STYLES ===== */
+
+/* Consistent card styling with smooth rounded corners */
+.card {
+  border-radius: 16px;
+  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+}
+
+.card-sm {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.card-lg {
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+/* Ensure all cards in grids stretch to fill */
+.grid-cards > *,
+.grid-cards-2 > *,
+.grid-cards-3 > *,
+.grid-cards-4 > * {
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Desktop - allow larger cards */
+@media (min-width: 1024px) {
+  .grid-cards > *,
+  .grid-cards-2 > *,
+  .grid-cards-3 > *,
+  .grid-cards-4 > * {
+    max-width: none;
+  }
+}
+
+/* ===== CENTER ALIGNMENT FIXES ===== */
+
+/* Center content in sections */
+.section-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Center flex rows that wrap */
+.centered-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+  width: 100%;
+}
+
+/* ===== SMOOTH CORNERS FOR ALL ELEMENTS ===== */
+
+/* Default smooth corners */
+[data-radius="l"] {
+  border-radius: 16px !important;
+}
+
+[data-radius="m"] {
+  border-radius: 12px !important;
+}
+
+[data-radius="xl"] {
+  border-radius: 20px !important;
+}
+
+/* ===== RESPONSIVE TYPOGRAPHY ===== */
+@media (max-width: 767px) {
+  /* Slightly reduce heading sizes on mobile */
+  h1, [class*="display-strong-xl"] {
+    font-size: clamp(2rem, 8vw, 3rem) !important;
+    line-height: 1.2 !important;
+  }
+}
+
+/* ===== CONTACT METHODS GRID ===== */
+.contact-methods-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .contact-methods-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .contact-methods-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  
+  .contact-methods-grid > * {
+    min-width: unset;
+  }
+}
+
 /* :root {
   /*
   /* Example setup for custom colors */

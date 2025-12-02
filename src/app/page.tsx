@@ -201,12 +201,7 @@ export default function Home() {
         background="neutral-alpha-weak"
       >
         <Column maxWidth="l" fillWidth gap="32">
-          <Row
-            fillWidth
-            wrap
-            horizontal="center"
-            gap="32"
-          >
+          <div className="stats-grid">
             {stats.map((stat, index) => (
               <RevealFx key={stat.label} translateY="8" delay={index * 0.1}>
                 <Column
@@ -214,7 +209,7 @@ export default function Home() {
                   align="center"
                   gap="8"
                   padding="24"
-                  style={{ minWidth: "160px" }}
+                  fillWidth
                 >
                   <Text variant="display-strong-l" onBackground="brand-strong">
                     {stat.value}
@@ -225,7 +220,7 @@ export default function Home() {
                 </Column>
               </RevealFx>
             ))}
-          </Row>
+          </div>
         </Column>
       </Flex>
 
@@ -257,7 +252,7 @@ export default function Home() {
             </Text>
           </Column>
 
-          <Row fillWidth wrap gap="24" horizontal="center">
+          <div className="grid-cards">
             {features.map((feature, index) => (
               <RevealFx key={feature.title} translateY="16" delay={index * 0.1}>
                 <Column
@@ -266,7 +261,8 @@ export default function Home() {
                   radius="l"
                   border="neutral-alpha-weak"
                   background="surface"
-                  style={{ flex: "1 1 280px", maxWidth: "320px" }}
+                  fillWidth
+                  className="card"
                 >
                   <Flex
                     width="48"
@@ -287,7 +283,7 @@ export default function Home() {
                 </Column>
               </RevealFx>
             ))}
-          </Row>
+          </div>
         </Column>
       </Flex>
 
@@ -311,7 +307,7 @@ export default function Home() {
             </Heading>
           </Column>
 
-          <Row fillWidth wrap gap="24" horizontal="center">
+          <div className="grid-cards-2">
             {services.map((service, index) => (
               <RevealFx key={service.title} translateY="16" delay={index * 0.15}>
                 <Column
@@ -320,7 +316,8 @@ export default function Home() {
                   radius="l"
                   border="neutral-alpha-weak"
                   background="page"
-                  style={{ flex: "1 1 400px", maxWidth: "500px" }}
+                  fillWidth
+                  className="card"
                 >
                   <Column gap="12">
                     <Text variant="heading-strong-l">{service.title}</Text>
@@ -344,7 +341,7 @@ export default function Home() {
                 </Column>
               </RevealFx>
             ))}
-          </Row>
+          </div>
         </Column>
       </Flex>
 
@@ -367,7 +364,7 @@ export default function Home() {
             </Heading>
           </Column>
 
-          <Row fillWidth wrap gap="24" horizontal="center">
+          <div className="grid-cards-4">
             {steps.map((step, index) => (
               <RevealFx key={step.step} translateY="16" delay={index * 0.1}>
                 <Column
@@ -375,7 +372,7 @@ export default function Home() {
                   padding="24"
                   horizontal="center"
                   align="center"
-                  style={{ flex: "1 1 220px", maxWidth: "280px" }}
+                  fillWidth
                 >
                   <Text
                     variant="display-strong-l"
@@ -397,7 +394,7 @@ export default function Home() {
                 </Column>
               </RevealFx>
             ))}
-          </Row>
+          </div>
         </Column>
       </Flex>
 
