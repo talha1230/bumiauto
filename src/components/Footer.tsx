@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { Row, Column, IconButton, Text, Flex } from "@once-ui-system/core";
-import { person, social } from "@/resources";
+import { Row, Column, IconButton, Text, Flex, Button } from "@once-ui-system/core";
+import { social } from "@/resources";
 import styles from "./Footer.module.scss";
 
 export const Footer = () => {
@@ -11,6 +11,7 @@ export const Footer = () => {
       { label: "About Us", href: "/about" },
       { label: "Our Services", href: "/services" },
       { label: "Contact", href: "/contact" },
+      { label: "Blog", href: "/blog" },
     ],
     services: [
       { label: "Motorcycle Loans", href: "/services#motorcycle" },
@@ -18,9 +19,9 @@ export const Footer = () => {
       { label: "Flexible Plans", href: "/services#flexible" },
     ],
     resources: [
-      { label: "Blog", href: "/blog" },
       { label: "FAQs", href: "/about#faq" },
       { label: "Apply Now", href: "/contact" },
+      { label: "How It Works", href: "/services#flexible" },
     ],
     legal: [
       { label: "Privacy Policy", href: "#" },
@@ -65,6 +66,14 @@ export const Footer = () => {
                   ),
               )}
             </Row>
+            <Button
+              href="/contact"
+              variant="primary"
+              size="m"
+              style={{ marginTop: "8px", width: "fit-content" }}
+            >
+              Apply Now
+            </Button>
           </Column>
 
           {/* Company Links */}
@@ -132,11 +141,15 @@ export const Footer = () => {
           horizontal="between"
           vertical="center"
           style={{ borderTop: "1px solid var(--neutral-alpha-medium)" }}
-          s={{ direction: "column", gap: "12", align: "center" }}
         >
-          <Text variant="body-default-xs" onBackground="neutral-weak">
-            © {currentYear} BumiAuto. All rights reserved.
-          </Text>
+          <Column gap="8">
+            <Text variant="body-default-xs" onBackground="neutral-weak">
+              © {currentYear} BumiAuto. All rights reserved.
+            </Text>
+            <Text variant="body-default-xs" onBackground="neutral-weak">
+              Licensed by Bank Negara Malaysia
+            </Text>
+          </Column>
           <Text variant="body-default-xs" onBackground="neutral-weak">
             Made with ❤️ in Malaysia
           </Text>

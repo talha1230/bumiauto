@@ -12,6 +12,24 @@ import {
   HiOutlineDocument,
   HiOutlineGlobeAsiaAustralia,
   HiOutlineRocketLaunch,
+  HiCheck,
+  HiShieldCheck,
+  HiBolt,
+  HiUsers,
+  HiPhone,
+  HiClock,
+  HiHeart,
+  HiMapPin,
+  HiUser,
+  HiChatBubbleLeftRight,
+  HiInformationCircle,
+  HiDocumentText,
+  HiShoppingCart,
+  HiTag,
+  HiBuildingStorefront,
+  HiBriefcase,
+  HiWallet,
+  HiReceiptPercent,
 } from "react-icons/hi2";
 
 import {
@@ -20,6 +38,8 @@ import {
   PiGridFourDuotone,
   PiBookBookmarkDuotone,
   PiImageDuotone,
+  PiMotorcycleDuotone,
+  PiTargetDuotone,
 } from "react-icons/pi";
 
 import {
@@ -63,6 +83,27 @@ export const iconLibrary: Record<string, IconType> = {
   whatsapp: FaWhatsapp,
   reddit: FaReddit,
   telegram: FaTelegram,
+  // New icons for BumiAuto
+  check: HiCheck,
+  shield: HiShieldCheck,
+  bolt: HiBolt,
+  users: HiUsers,
+  phone: HiPhone,
+  clock: HiClock,
+  heart: HiHeart,
+  mapPin: HiMapPin,
+  user: HiUser,
+  message: HiChatBubbleLeftRight,
+  info: HiInformationCircle,
+  fileText: HiDocumentText,
+  shoppingCart: HiShoppingCart,
+  tag: HiTag,
+  store: HiBuildingStorefront,
+  briefcase: HiBriefcase,
+  wallet: HiWallet,
+  percent: HiReceiptPercent,
+  bike: PiMotorcycleDuotone,
+  target: PiTargetDuotone,
 };
 
 export type IconLibrary = typeof iconLibrary;
