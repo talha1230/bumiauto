@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { CustomMDX, ScrollToHash } from "@/components";
+import { ScrollToHash } from "@/components";
 import {
   Meta,
   Schema,
@@ -16,17 +16,77 @@ import {
 } from "@once-ui-system/core";
 import { baseURL, about, blog, person } from "@/resources";
 import { formatDate } from "@/utils/formatDate";
-import { getPosts } from "@/utils/utils";
+import { createServerSupabaseClient, createAdminSupabaseClient } from "@/lib/supabase";
+import type { BlogPost, BlogComment } from "@/lib/supabase";
 import { Metadata } from "next";
 import React from "react";
-import { Posts } from "@/components/blog/Posts";
-import { ShareSection } from "@/components/blog/ShareSection";
+import { LikeButton } from "@/components/blog/LikeButton";
+import { CommentSection } from "@/components/blog/CommentSection";
 
-export async function generateStaticParams(): Promise<{ slug: string }[]> {
-  const posts = getPosts(["src", "app", "blog", "posts"]);
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
+async function getBlogPost(slug: string): Promise<BlogPost | null> {
+  try {
+    const supabase = await createServerSupabaseClient();
+
+    const { data: post } = await supabase
+      .from("blog_posts")
+      .select("*")
+      .eq("slug", slug)
+      .eq("published", true)
+      .single();
+
+    return post as BlogPost | null;
+  } catch (error) {
+    console.error("Error fetching blog post:", error);
+    return null;
+  }
+}
+
+async function getApprovedComments(postId: string): Promise<BlogComment[]> {
+  try {
+    const supabase = await createServerSupabaseClient();
+
+    const { data: comments } = await supabase
+      .from("blog_comments")
+      .select("*")
+      .eq("post_id", postId)
+      .eq("approved", true)
+      .order("created_at", { ascending: true });
+
+    return (comments || []) as BlogComment[];
+  } catch (error) {
+    console.error("Error fetching comments:", error);
+    return [];
+  }
+}
+
+async function incrementViewCount(postId: string) {
+  try {
+    const supabase = await createAdminSupabaseClient();
+
+    await supabase.rpc("increment_view_count", { post_id: postId });
+  } catch (error) {
+    // Silently fail - view count is not critical
+    console.error("Error incrementing view count:", error);
+  }
+}
+
+async function getRecentPosts(excludeSlug: string): Promise<BlogPost[]> {
+  try {
+    const supabase = await createServerSupabaseClient();
+
+    const { data: posts } = await supabase
+      .from("blog_posts")
+      .select("*")
+      .eq("published", true)
+      .neq("slug", excludeSlug)
+      .order("published_at", { ascending: false })
+      .limit(2);
+
+    return (posts || []) as BlogPost[];
+  } catch (error) {
+    console.error("Error fetching recent posts:", error);
+    return [];
+  }
 }
 
 export async function generateMetadata({
@@ -39,16 +99,15 @@ export async function generateMetadata({
     ? routeParams.slug.join("/")
     : routeParams.slug || "";
 
-  const posts = getPosts(["src", "app", "blog", "posts"]);
-  let post = posts.find((post) => post.slug === slugPath);
+  const post = await getBlogPost(slugPath);
 
   if (!post) return {};
 
   return Meta.generate({
-    title: post.metadata.title,
-    description: post.metadata.summary,
+    title: post.title,
+    description: post.summary || "",
     baseURL: baseURL,
-    image: post.metadata.image || `/api/og/generate?title=${post.metadata.title}`,
+    image: post.image_url || `/api/og/generate?title=${post.title}`,
     path: `${blog.path}/${post.slug}`,
   });
 }
@@ -59,16 +118,17 @@ export default async function Blog({ params }: { params: Promise<{ slug: string 
     ? routeParams.slug.join("/")
     : routeParams.slug || "";
 
-  let post = getPosts(["src", "app", "blog", "posts"]).find((post) => post.slug === slugPath);
+  const post = await getBlogPost(slugPath);
 
   if (!post) {
     notFound();
   }
 
-  const avatars =
-    post.metadata.team?.map((person) => ({
-      src: person.avatar,
-    })) || [];
+  // Increment view count
+  await incrementViewCount(post.id);
+
+  const comments = await getApprovedComments(post.id);
+  const recentPosts = await getRecentPosts(post.slug);
 
   return (
     <Row fillWidth>
@@ -79,13 +139,13 @@ export default async function Blog({ params }: { params: Promise<{ slug: string 
             as="blogPosting"
             baseURL={baseURL}
             path={`${blog.path}/${post.slug}`}
-            title={post.metadata.title}
-            description={post.metadata.summary}
-            datePublished={post.metadata.publishedAt}
-            dateModified={post.metadata.publishedAt}
+            title={post.title}
+            description={post.summary || ""}
+            datePublished={post.published_at || post.created_at}
+            dateModified={post.updated_at}
             image={
-              post.metadata.image ||
-              `/api/og/generate?title=${encodeURIComponent(post.metadata.title)}`
+              post.image_url ||
+              `/api/og/generate?title=${encodeURIComponent(post.title)}`
             }
             author={{
               name: person.name,
@@ -98,9 +158,9 @@ export default async function Blog({ params }: { params: Promise<{ slug: string 
               <Text variant="label-strong-m">Blog</Text>
             </SmartLink>
             <Text variant="body-default-xs" onBackground="neutral-weak" marginBottom="12">
-              {post.metadata.publishedAt && formatDate(post.metadata.publishedAt)}
+              {post.published_at && formatDate(post.published_at)}
             </Text>
-            <Heading variant="display-strong-m">{post.metadata.title}</Heading>
+            <Heading variant="display-strong-m">{post.title}</Heading>
           </Column>
           <Row marginBottom="32" horizontal="center">
             <Row gap="16" vertical="center">
@@ -110,10 +170,10 @@ export default async function Blog({ params }: { params: Promise<{ slug: string 
               </Text>
             </Row>
           </Row>
-          {post.metadata.image && (
+          {post.image_url && (
             <Media
-              src={post.metadata.image}
-              alt={post.metadata.title}
+              src={post.image_url}
+              alt={post.title}
               aspectRatio="16/9"
               priority
               sizes="(min-width: 768px) 100vw, 768px"
@@ -124,21 +184,55 @@ export default async function Blog({ params }: { params: Promise<{ slug: string 
             />
           )}
           <Column as="article" maxWidth="s">
-            <CustomMDX source={post.content} />
+            <div
+              dangerouslySetInnerHTML={{ __html: post.content }}
+              style={{ lineHeight: 1.7 }}
+            />
           </Column>
-          
-          <ShareSection 
-            title={post.metadata.title} 
-            url={`${baseURL}${blog.path}/${post.slug}`} 
-          />
 
-          <Column fillWidth gap="40" horizontal="center" marginTop="40">
-            <Line maxWidth="40" />
-            <Heading as="h2" variant="heading-strong-xl" marginBottom="24">
-              Recent posts
-            </Heading>
-            <Posts exclude={[post.slug]} range={[1, 2]} columns="2" thumbnail direction="column" />
-          </Column>
+          {/* Like Button and Stats */}
+          <Row gap="m" vertical="center" marginTop="24">
+            <LikeButton postId={post.id} initialLikes={post.likes_count} />
+            <Text variant="body-default-s" onBackground="neutral-weak">
+              {post.views_count} views
+            </Text>
+          </Row>
+
+          {/* Comment Section */}
+          <CommentSection postId={post.id} comments={comments} />
+
+          {recentPosts.length > 0 && (
+            <Column fillWidth gap="40" horizontal="center" marginTop="40">
+              <Line maxWidth="40" />
+              <Heading as="h2" variant="heading-strong-xl" marginBottom="24">
+                Recent posts
+              </Heading>
+              <Row gap="m" wrap>
+                {recentPosts.map((recentPost) => (
+                  <SmartLink
+                    key={recentPost.id}
+                    href={`/blog/${recentPost.slug}`}
+                    style={{ textDecoration: "none", flex: 1, minWidth: "250px" }}
+                  >
+                    <Column gap="s" padding="m" border="neutral-alpha-weak" radius="m">
+                      {recentPost.image_url && (
+                        <Media
+                          src={recentPost.image_url}
+                          alt={recentPost.title}
+                          aspectRatio="16/9"
+                          radius="s"
+                        />
+                      )}
+                      <Text variant="heading-strong-s">{recentPost.title}</Text>
+                      <Text variant="body-default-xs" onBackground="neutral-weak">
+                        {recentPost.published_at && formatDate(recentPost.published_at)}
+                      </Text>
+                    </Column>
+                  </SmartLink>
+                ))}
+              </Row>
+            </Column>
+          )}
           <ScrollToHash />
         </Column>
       </Row>
