@@ -6,6 +6,7 @@ import {
   Schema,
   Meta,
 } from "@once-ui-system/core";
+import Link from "next/link";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { person, baseURL } from "@/resources";
 
@@ -37,7 +38,7 @@ export default function Contact() {
             Get in Touch
           </Heading>
           <Text wrap="balance" onBackground="neutral-weak" variant="body-default-l" align="center">
-            Have questions? We're here to help. Send us a message and we'll respond within 24 hours.
+            Have questions? We&apos;re here to help. Send us a message and we&apos;ll respond within 24 hours.
           </Text>
         </Column>
 
@@ -107,9 +108,9 @@ export default function Contact() {
         <Column gap="12" align="center">
           <Text variant="body-default-s" onBackground="neutral-weak" align="center">
             For loan applications, please use our dedicated{" "}
-            <a href="/" style={{ color: "var(--brand-on-background-medium)", textDecoration: "underline" }}>
+            <Link href="/" style={{ color: "var(--brand-on-background-medium)", textDecoration: "underline" }}>
               loan inquiry form
-            </a>
+            </Link>
             .
           </Text>
           <Text variant="body-default-s" onBackground="neutral-weak" align="center">
