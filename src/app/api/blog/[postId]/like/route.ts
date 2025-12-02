@@ -4,8 +4,12 @@ import { createAdminSupabaseClient } from "@/lib/supabase";
 import { headers } from "next/headers";
 import crypto from "crypto";
 
+// Salt for visitor ID hashing (should be set in environment for production)
+const VISITOR_ID_SALT = process.env.VISITOR_ID_SALT || "bumiauto-default-salt-2024";
+
 function generateVisitorId(ip: string, userAgent: string): string {
-  const data = `${ip}-${userAgent}`;
+  // Combine IP, user agent, and salt for better uniqueness
+  const data = `${ip || "anonymous"}-${userAgent || "unknown"}-${VISITOR_ID_SALT}`;
   return crypto.createHash("sha256").update(data).digest("hex").substring(0, 32);
 }
 

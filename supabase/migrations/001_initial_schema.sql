@@ -1,5 +1,5 @@
 -- Migration: Initial database schema for BumiAuto
--- Created: 2024
+-- Created: 2024-12-02
 -- Description: Creates tables for contact submissions, loan inquiries, blog system, and admin users
 
 -- Admin Users (create first due to foreign key references)
@@ -193,7 +193,6 @@ CREATE TRIGGER update_blog_posts_updated_at
   FOR EACH ROW
   EXECUTE FUNCTION update_updated_at_column();
 
--- Insert default admin user
-INSERT INTO admin_users (email, role, name) 
-VALUES ('admin@bumiauto.com', 'super_admin', 'Admin')
-ON CONFLICT (email) DO NOTHING;
+-- Note: Admin user should be created through the admin dashboard or via direct SQL insert
+-- with proper security measures. Do not create default admin users in migrations for production.
+-- Example: INSERT INTO admin_users (email, role, name) VALUES ('admin@example.com', 'super_admin', 'Admin');

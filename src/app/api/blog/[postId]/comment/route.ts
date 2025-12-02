@@ -2,6 +2,9 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { createAdminSupabaseClient } from "@/lib/supabase";
 
+// Maximum comment length (configurable via environment variable)
+const MAX_COMMENT_LENGTH = parseInt(process.env.MAX_COMMENT_LENGTH || "2000", 10);
+
 export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ postId: string }> }
@@ -29,9 +32,9 @@ export async function POST(
     }
 
     // Content length validation
-    if (content.length > 2000) {
+    if (content.length > MAX_COMMENT_LENGTH) {
       return NextResponse.json(
-        { error: "Comment is too long (max 2000 characters)" },
+        { error: `Comment is too long (max ${MAX_COMMENT_LENGTH} characters)` },
         { status: 400 }
       );
     }

@@ -18,6 +18,7 @@ import { baseURL, about, blog, person } from "@/resources";
 import { formatDate } from "@/utils/formatDate";
 import { createServerSupabaseClient, createAdminSupabaseClient } from "@/lib/supabase";
 import type { BlogPost, BlogComment } from "@/lib/supabase";
+import DOMPurify from "isomorphic-dompurify";
 import { Metadata } from "next";
 import React from "react";
 import { LikeButton } from "@/components/blog/LikeButton";
@@ -185,7 +186,7 @@ export default async function Blog({ params }: { params: Promise<{ slug: string 
           )}
           <Column as="article" maxWidth="s">
             <div
-              dangerouslySetInnerHTML={{ __html: post.content }}
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }}
               style={{ lineHeight: 1.7 }}
             />
           </Column>

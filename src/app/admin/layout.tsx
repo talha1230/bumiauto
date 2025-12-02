@@ -1,6 +1,6 @@
 import { getAdminSession } from "@/lib/admin-auth";
-import { Column, Flex, Row, Text, SmartLink, Button, Icon } from "@once-ui-system/core";
-import { redirect } from "next/navigation";
+import { Column, Row, Text, SmartLink, Icon } from "@once-ui-system/core";
+import { LogoutButton } from "@/components/admin/LogoutButton";
 
 async function AdminSidebar() {
   const session = await getAdminSession();
@@ -52,12 +52,7 @@ async function AdminSidebar() {
       </Column>
 
       <Column style={{ marginTop: "auto" }}>
-        <form action="/api/admin/logout" method="POST">
-          <Button type="submit" variant="secondary" size="m" fillWidth>
-            <Icon name="close" size="s" />
-            Logout
-          </Button>
-        </form>
+        <LogoutButton />
       </Column>
     </Column>
   );

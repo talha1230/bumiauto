@@ -2,9 +2,9 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
-// Hardcoded admin credentials
-const ADMIN_EMAIL = "admin@bumiauto.com";
-const ADMIN_PASSWORD = "bumiauto0123";
+// Admin credentials from environment variables (with fallback for development)
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "admin@bumiauto.com";
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "bumiauto0123";
 
 export async function POST(request: NextRequest) {
   try {
