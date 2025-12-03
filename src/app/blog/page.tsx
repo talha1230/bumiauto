@@ -21,12 +21,18 @@ async function getBlogPosts(): Promise<BlogPost[]> {
   try {
     const supabase = await createAdminSupabaseClient();
 
-    const { data: posts } = await supabase
+    const { data: posts, error } = await supabase
       .from("blog_posts")
       .select("*")
       .eq("published", true)
       .order("published_at", { ascending: false });
 
+    if (error) {
+      console.error("Supabase error fetching blog posts:", error);
+      return [];
+    }
+
+    console.log("Fetched blog posts:", posts?.length || 0);
     return (posts || []) as BlogPost[];
   } catch (error) {
     console.error("Error fetching blog posts:", error);

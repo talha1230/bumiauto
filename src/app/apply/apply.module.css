@@ -27,6 +27,11 @@
   grid-template-columns: 1fr 1fr;
   gap: 16px;
   margin-top: 16px;
+  width: 100%;
+}
+
+.quickFeatures > div {
+  min-width: 0;
 }
 
 /* Steps Grid */
@@ -93,6 +98,12 @@
 
   .quickFeatures {
     grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .quickFeatures > div {
+    display: flex;
+    align-items: center;
     gap: 12px;
   }
 
