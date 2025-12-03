@@ -116,6 +116,24 @@ export default async function AdminDashboard() {
           <span className={styles.quickActionIcon}>📧</span>
           <span className={styles.quickActionLabel}>View Inquiries</span>
         </Link>
+        <Link href="/admin/comments" className={styles.quickActionCard}>
+          <span className={styles.quickActionIcon}>💬</span>
+          <span className={styles.quickActionLabel}>
+            Moderate Comments
+            {stats.pendingCommentsCount > 0 && (
+              <span style={{ 
+                marginLeft: "8px",
+                background: "var(--danger-solid-strong, #ef4444)",
+                color: "white",
+                padding: "2px 8px",
+                borderRadius: "9999px",
+                fontSize: "0.75rem",
+              }}>
+                {stats.pendingCommentsCount}
+              </span>
+            )}
+          </span>
+        </Link>
         <Link href="/admin/blog/new" className={styles.quickActionCard}>
           <span className={styles.quickActionIcon}>✏️</span>
           <span className={styles.quickActionLabel}>Write New Post</span>

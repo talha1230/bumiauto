@@ -26,6 +26,21 @@ async function getPendingCount(): Promise<number> {
   }
 }
 
+async function getPendingCommentsCount(): Promise<number> {
+  try {
+    const supabase = await createAdminSupabaseClient();
+    
+    const { count: pendingComments } = await supabase
+      .from("blog_comments")
+      .select("*", { count: "exact", head: true })
+      .eq("approved", false);
+    
+    return pendingComments || 0;
+  } catch {
+    return 0;
+  }
+}
+
 export default async function AdminLayout({
   children,
 }: {
@@ -40,11 +55,16 @@ export default async function AdminLayout({
   }
 
   const pendingCount = await getPendingCount();
+  const pendingCommentsCount = await getPendingCommentsCount();
 
   // Logged in - show admin layout with sidebar
   return (
     <div className={styles.adminContainer}>
-      <AdminSidebar email={session.email} pendingCount={pendingCount} />
+      <AdminSidebar 
+        email={session.email} 
+        pendingCount={pendingCount} 
+        pendingCommentsCount={pendingCommentsCount}
+      />
       <main className={styles.mainContent}>
         {children}
       </main>

@@ -7,9 +7,10 @@ import styles from "./admin.module.css";
 interface AdminSidebarProps {
   email: string;
   pendingCount?: number;
+  pendingCommentsCount?: number;
 }
 
-export function AdminSidebar({ email, pendingCount = 0 }: AdminSidebarProps) {
+export function AdminSidebar({ email, pendingCount = 0, pendingCommentsCount = 0 }: AdminSidebarProps) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -48,6 +49,7 @@ export function AdminSidebar({ email, pendingCount = 0 }: AdminSidebarProps) {
   const navItems = [
     { href: "/admin", label: "Dashboard", icon: "📊" },
     { href: "/admin/inquiries", label: "Inquiries", icon: "📧", badge: pendingCount > 0 ? pendingCount : undefined },
+    { href: "/admin/comments", label: "Comments", icon: "💬", badge: pendingCommentsCount > 0 ? pendingCommentsCount : undefined },
     { href: "/admin/blog", label: "Blog", icon: "📝" },
   ];
 
