@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminSupabaseClient } from "@/lib/supabase";
-import { isAuthenticated } from "@/lib/admin-auth";
+import { getAdminSession } from "@/lib/admin-auth";
 
 // Force dynamic rendering
 export const dynamic = 'force-dynamic';
@@ -12,8 +12,8 @@ export async function PATCH(
 ) {
   try {
     // Check authentication
-    const authenticated = await isAuthenticated();
-    if (!authenticated) {
+    const session = await getAdminSession();
+    if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -66,8 +66,8 @@ export async function DELETE(
 ) {
   try {
     // Check authentication
-    const authenticated = await isAuthenticated();
-    if (!authenticated) {
+    const session = await getAdminSession();
+    if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
