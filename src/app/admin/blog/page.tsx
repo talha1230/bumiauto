@@ -2,6 +2,9 @@ import { requireAdminSession } from "@/lib/admin-auth";
 import { createAdminSupabaseClient } from "@/lib/supabase";
 import type { BlogPost } from "@/lib/supabase";
 import Link from "next/link";
+
+// Force dynamic rendering since we use cookies for auth
+export const dynamic = 'force-dynamic';
 import { formatDate } from "@/utils/formatDate";
 import { BlogPostActions } from "./BlogPostActions";
 import styles from "../admin.module.css";

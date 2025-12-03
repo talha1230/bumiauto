@@ -14,6 +14,9 @@ import {
   Media,
   Line,
 } from "@once-ui-system/core";
+
+// Force dynamic rendering since we use cookies for Supabase
+export const dynamic = 'force-dynamic';
 import { baseURL, about, blog, person } from "@/resources";
 import { formatDate } from "@/utils/formatDate";
 import { createServerSupabaseClient, createAdminSupabaseClient } from "@/lib/supabase";

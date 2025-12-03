@@ -2,6 +2,9 @@ import { requireAdminSession } from "@/lib/admin-auth";
 import { createAdminSupabaseClient } from "@/lib/supabase";
 import type { ContactSubmission, LoanInquiry } from "@/lib/supabase";
 import { formatDate } from "@/utils/formatDate";
+
+// Force dynamic rendering since we use cookies for auth
+export const dynamic = 'force-dynamic';
 import { InquiryActions } from "./InquiryActions";
 import styles from "../admin.module.css";
 

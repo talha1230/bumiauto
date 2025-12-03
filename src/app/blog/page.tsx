@@ -1,6 +1,9 @@
 import { Column, Heading, Meta, Text, Flex, Card, Row, SmartLink, Tag, Media } from "@once-ui-system/core";
 import { baseURL, blog } from "@/resources";
 import { createServerSupabaseClient } from "@/lib/supabase";
+
+// Force dynamic rendering since we use cookies for Supabase
+export const dynamic = 'force-dynamic';
 import type { BlogPost } from "@/lib/supabase";
 import { formatDate } from "@/utils/formatDate";
 

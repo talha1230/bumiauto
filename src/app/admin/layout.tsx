@@ -3,6 +3,9 @@ import { createAdminSupabaseClient } from "@/lib/supabase";
 import { AdminSidebar } from "./AdminSidebar";
 import styles from "./admin.module.css";
 
+// Force dynamic rendering since we use cookies for auth
+export const dynamic = 'force-dynamic';
+
 async function getPendingCount(): Promise<number> {
   try {
     const supabase = await createAdminSupabaseClient();

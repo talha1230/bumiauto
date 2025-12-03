@@ -2,6 +2,9 @@ import { createAdminSupabaseClient } from "@/lib/supabase";
 import styles from "./admin.module.css";
 import Link from "next/link";
 
+// Force dynamic rendering since we use cookies for Supabase
+export const dynamic = 'force-dynamic';
+
 async function getStats() {
   try {
     const supabase = await createAdminSupabaseClient();
