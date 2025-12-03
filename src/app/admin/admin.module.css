@@ -477,6 +477,16 @@
   box-shadow: 0 0 0 2px var(--brand-alpha-weak, #22c55e20);
 }
 
+.slugPreview {
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--neutral-alpha-weak, #333);
+  background: var(--neutral-alpha-weak, #1a1a1a);
+  color: var(--neutral-on-background-weak, #888);
+  font-family: monospace;
+  font-size: 14px;
+}
+
 .formSelect {
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23888'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
