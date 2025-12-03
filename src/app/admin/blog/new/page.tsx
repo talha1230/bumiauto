@@ -9,8 +9,8 @@ import {
   Input,
   Button,
   Row,
-  Card,
 } from "@once-ui-system/core";
+import styles from "../../admin.module.css";
 
 export default function NewBlogPost() {
   const router = useRouter();
@@ -63,7 +63,7 @@ export default function NewBlogPost() {
       } else {
         setError(data.error || "Failed to create post");
       }
-    } catch (err) {
+    } catch {
       setError("An error occurred. Please try again.");
     } finally {
       setLoading(false);
@@ -135,17 +135,7 @@ export default function NewBlogPost() {
               }
               required
               rows={15}
-              style={{
-                width: "100%",
-                padding: "12px",
-                borderRadius: "8px",
-                border: "1px solid var(--neutral-alpha-weak)",
-                background: "var(--surface-background)",
-                color: "var(--neutral-on-background-strong)",
-                fontFamily: "monospace",
-                fontSize: "14px",
-                resize: "vertical",
-              }}
+              className={styles.formTextareaCode}
               placeholder="Write your blog post content here. HTML tags are supported."
             />
           </Column>

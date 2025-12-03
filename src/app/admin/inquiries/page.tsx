@@ -1,17 +1,9 @@
 import { requireAdminSession } from "@/lib/admin-auth";
 import { createAdminSupabaseClient } from "@/lib/supabase";
 import type { ContactSubmission, LoanInquiry } from "@/lib/supabase";
-import {
-  Column,
-  Heading,
-  Text,
-  Row,
-  Card,
-  Tag,
-  Button,
-} from "@once-ui-system/core";
 import { formatDate } from "@/utils/formatDate";
 import { InquiryActions } from "./InquiryActions";
+import styles from "../admin.module.css";
 
 async function getInquiries() {
   try {
@@ -42,23 +34,23 @@ async function getInquiries() {
   }
 }
 
-function getStatusColor(status: string) {
+function getStatusBadgeClass(status: string) {
   switch (status) {
     case "new":
     case "pending":
-      return "warning";
+      return styles.badgeWarning;
     case "read":
     case "contacted":
-      return "info";
+      return styles.badgeInfo;
     case "responded":
     case "approved":
     case "completed":
-      return "success";
+      return styles.badgeSuccess;
     case "rejected":
     case "archived":
-      return "danger";
+      return styles.badgeDanger;
     default:
-      return "neutral";
+      return styles.badgeNeutral;
   }
 }
 
@@ -67,137 +59,115 @@ export default async function InquiriesPage() {
   const { contacts, loans } = await getInquiries();
 
   return (
-    <Column gap="xl" fillWidth>
-      <Column gap="s">
-        <Heading variant="display-strong-m">Inquiries</Heading>
-        <Text variant="body-default-l" onBackground="neutral-weak">
+    <div>
+      <div className={styles.pageHeader}>
+        <h1 className={styles.pageTitle}>Inquiries</h1>
+        <p className={styles.pageSubtitle}>
           Manage contact submissions and loan inquiries
-        </Text>
-      </Column>
+        </p>
+      </div>
 
       {/* Loan Inquiries Section */}
-      <Column gap="m">
-        <Heading variant="heading-strong-m">Loan Inquiries</Heading>
-        {loans.length === 0 ? (
-          <Card padding="l" border="neutral-alpha-weak">
-            <Text onBackground="neutral-weak">No loan inquiries yet</Text>
-          </Card>
-        ) : (
-          <Column gap="s">
-            {loans.map((loan) => (
-              <Card
-                key={loan.id}
-                padding="m"
-                radius="m"
-                border="neutral-alpha-weak"
-              >
-                <Row gap="m" vertical="start" wrap>
-                  <Column gap="xs" style={{ flex: 1, minWidth: "200px" }}>
-                    <Row gap="s" vertical="center">
-                      <Text variant="heading-strong-s">{loan.full_name}</Text>
-                      <Tag
-                        variant={getStatusColor(loan.status) as any}
-                        size="s"
-                        label={loan.status}
-                      />
-                    </Row>
-                    <Text variant="body-default-s" onBackground="neutral-weak">
-                      {loan.email} • {loan.phone}
-                    </Text>
-                    <Text variant="body-default-s">
-                      Loan Type: {loan.loan_type}
-                      {loan.loan_amount && ` • Amount: RM ${loan.loan_amount}`}
-                    </Text>
-                    {loan.message && (
-                      <Text
-                        variant="body-default-xs"
-                        onBackground="neutral-weak"
-                        style={{ marginTop: "8px" }}
-                      >
-                        {loan.message}
-                      </Text>
-                    )}
-                    <Text
-                      variant="body-default-xs"
-                      onBackground="neutral-weak"
-                      style={{ marginTop: "8px" }}
-                    >
-                      {formatDate(loan.created_at)}
-                    </Text>
-                  </Column>
+      <div className={styles.sectionHeader}>
+        <h2 className={styles.sectionTitle}>
+          Loan Inquiries ({loans.length})
+        </h2>
+      </div>
+
+      {loans.length === 0 ? (
+        <div className={`${styles.card} ${styles.emptyState}`}>
+          <div className={styles.emptyStateIcon}>📋</div>
+          <p className={styles.emptyStateText}>No loan inquiries yet</p>
+        </div>
+      ) : (
+        <div className={styles.sectionMargin}>
+          {loans.map((loan) => (
+            <div key={loan.id} className={styles.listItem}>
+              <div className={styles.listItemHeader}>
+                <div className={styles.listItemContent}>
+                  <div className={styles.listItemTitleRow}>
+                    <span className={styles.listItemTitle}>{loan.full_name}</span>
+                    <span className={`${styles.badge} ${getStatusBadgeClass(loan.status)}`}>
+                      {loan.status}
+                    </span>
+                  </div>
+                  <p className={styles.listItemSubtext}>
+                    {loan.email} • {loan.phone}
+                  </p>
+                  <p className={styles.listItemDetail}>
+                    <strong>Loan Type:</strong> {loan.loan_type}
+                    {loan.loan_amount && <> • <strong>Amount:</strong> RM {loan.loan_amount.toLocaleString()}</>}
+                  </p>
+                  {loan.message && (
+                    <p className={styles.listItemMessage}>
+                      {loan.message}
+                    </p>
+                  )}
+                  <p className={styles.listItemMeta}>{formatDate(loan.created_at)}</p>
+                </div>
+                <div className={styles.listItemActions}>
                   <InquiryActions
                     id={loan.id}
                     type="loan"
                     currentStatus={loan.status}
                   />
-                </Row>
-              </Card>
-            ))}
-          </Column>
-        )}
-      </Column>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Contact Submissions Section */}
-      <Column gap="m">
-        <Heading variant="heading-strong-m">Contact Submissions</Heading>
-        {contacts.length === 0 ? (
-          <Card padding="l" border="neutral-alpha-weak">
-            <Text onBackground="neutral-weak">No contact submissions yet</Text>
-          </Card>
-        ) : (
-          <Column gap="s">
-            {contacts.map((contact) => (
-              <Card
-                key={contact.id}
-                padding="m"
-                radius="m"
-                border="neutral-alpha-weak"
-              >
-                <Row gap="m" vertical="start" wrap>
-                  <Column gap="xs" style={{ flex: 1, minWidth: "200px" }}>
-                    <Row gap="s" vertical="center">
-                      <Text variant="heading-strong-s">{contact.name}</Text>
-                      <Tag
-                        variant={getStatusColor(contact.status) as any}
-                        size="s"
-                        label={contact.status}
-                      />
-                    </Row>
-                    <Text variant="body-default-s" onBackground="neutral-weak">
-                      {contact.email}
-                      {contact.phone && ` • ${contact.phone}`}
-                    </Text>
-                    {contact.subject && (
-                      <Text variant="body-default-s">
-                        Subject: {contact.subject}
-                      </Text>
-                    )}
-                    <Text
-                      variant="body-default-xs"
-                      onBackground="neutral-weak"
-                      style={{ marginTop: "8px" }}
-                    >
-                      {contact.message}
-                    </Text>
-                    <Text
-                      variant="body-default-xs"
-                      onBackground="neutral-weak"
-                      style={{ marginTop: "8px" }}
-                    >
-                      {formatDate(contact.created_at)}
-                    </Text>
-                  </Column>
+      <div className={styles.sectionHeader}>
+        <h2 className={styles.sectionTitle}>
+          Contact Submissions ({contacts.length})
+        </h2>
+      </div>
+
+      {contacts.length === 0 ? (
+        <div className={`${styles.card} ${styles.emptyState}`}>
+          <div className={styles.emptyStateIcon}>📧</div>
+          <p className={styles.emptyStateText}>No contact submissions yet</p>
+        </div>
+      ) : (
+        <div>
+          {contacts.map((contact) => (
+            <div key={contact.id} className={styles.listItem}>
+              <div className={styles.listItemHeader}>
+                <div className={styles.listItemContent}>
+                  <div className={styles.listItemTitleRow}>
+                    <span className={styles.listItemTitle}>{contact.name}</span>
+                    <span className={`${styles.badge} ${getStatusBadgeClass(contact.status)}`}>
+                      {contact.status}
+                    </span>
+                  </div>
+                  <p className={styles.listItemSubtext}>
+                    {contact.email}
+                    {contact.phone && <> • {contact.phone}</>}
+                  </p>
+                  {contact.subject && (
+                    <p className={styles.listItemDetail}>
+                      <strong>Subject:</strong> {contact.subject}
+                    </p>
+                  )}
+                  <p className={styles.listItemMessage}>
+                    {contact.message}
+                  </p>
+                  <p className={styles.listItemMeta}>{formatDate(contact.created_at)}</p>
+                </div>
+                <div className={styles.listItemActions}>
                   <InquiryActions
                     id={contact.id}
                     type="contact"
                     currentStatus={contact.status}
                   />
-                </Row>
-              </Card>
-            ))}
-          </Column>
-        )}
-      </Column>
-    </Column>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }

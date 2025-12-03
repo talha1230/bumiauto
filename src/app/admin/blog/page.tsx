@@ -1,18 +1,10 @@
 import { requireAdminSession } from "@/lib/admin-auth";
 import { createAdminSupabaseClient } from "@/lib/supabase";
 import type { BlogPost } from "@/lib/supabase";
-import {
-  Column,
-  Heading,
-  Text,
-  Row,
-  Card,
-  Tag,
-  Button,
-  SmartLink,
-} from "@once-ui-system/core";
+import Link from "next/link";
 import { formatDate } from "@/utils/formatDate";
 import { BlogPostActions } from "./BlogPostActions";
+import styles from "../admin.module.css";
 
 async function getBlogPosts() {
   try {
@@ -35,85 +27,62 @@ export default async function BlogAdminPage() {
   const posts = await getBlogPosts();
 
   return (
-    <Column gap="xl" fillWidth>
-      <Row gap="m" vertical="center" horizontal="between" wrap>
-        <Column gap="s">
-          <Heading variant="display-strong-m">Blog Management</Heading>
-          <Text variant="body-default-l" onBackground="neutral-weak">
-            Create and manage blog posts
-          </Text>
-        </Column>
-        <SmartLink href="/admin/blog/new">
-          <Button variant="primary" size="m">
-            New Post
-          </Button>
-        </SmartLink>
-      </Row>
+    <div>
+      <div className={styles.pageHeader}>
+        <div className={styles.sectionHeader}>
+          <div>
+            <h1 className={styles.pageTitle}>Blog Management</h1>
+            <p className={styles.pageSubtitle}>Create and manage blog posts</p>
+          </div>
+          <Link href="/admin/blog/new" className={`${styles.button} ${styles.buttonPrimary}`}>
+            ✏️ New Post
+          </Link>
+        </div>
+      </div>
 
-      <Column gap="m">
-        {posts.length === 0 ? (
-          <Card padding="l" border="neutral-alpha-weak">
-            <Column gap="m" horizontal="center">
-              <Text onBackground="neutral-weak">No blog posts yet</Text>
-              <SmartLink href="/admin/blog/new">
-                <Button variant="secondary" size="m">
-                  Create your first post
-                </Button>
-              </SmartLink>
-            </Column>
-          </Card>
-        ) : (
-          <Column gap="s">
-            {posts.map((post) => (
-              <Card
-                key={post.id}
-                padding="m"
-                radius="m"
-                border="neutral-alpha-weak"
-              >
-                <Row gap="m" vertical="center" wrap>
-                  <Column gap="xs" style={{ flex: 1, minWidth: "200px" }}>
-                    <Row gap="s" vertical="center">
-                      <Text variant="heading-strong-s">{post.title}</Text>
-                      <Tag
-                        variant={post.published ? "success" : "warning"}
-                        size="s"
-                        label={post.published ? "Published" : "Draft"}
-                      />
-                    </Row>
-                    <Text variant="body-default-s" onBackground="neutral-weak">
-                      /{post.slug}
-                    </Text>
-                    {post.summary && (
-                      <Text
-                        variant="body-default-xs"
-                        onBackground="neutral-weak"
-                        style={{ marginTop: "4px" }}
-                      >
-                        {post.summary.substring(0, 150)}
-                        {post.summary.length > 150 ? "..." : ""}
-                      </Text>
-                    )}
-                    <Row gap="m" style={{ marginTop: "8px" }}>
-                      <Text variant="body-default-xs" onBackground="neutral-weak">
-                        {formatDate(post.created_at)}
-                      </Text>
-                      <Text variant="body-default-xs" onBackground="neutral-weak">
-                        {post.views_count} views • {post.likes_count} likes
-                      </Text>
-                    </Row>
-                  </Column>
+      {posts.length === 0 ? (
+        <div className={`${styles.card} ${styles.emptyState}`}>
+          <div className={styles.emptyStateIcon}>📝</div>
+          <p className={styles.emptyStateText}>No blog posts yet</p>
+          <Link href="/admin/blog/new" className={`${styles.button} ${styles.buttonSecondary}`}>
+            Create your first post
+          </Link>
+        </div>
+      ) : (
+        <div>
+          {posts.map((post) => (
+            <div key={post.id} className={styles.listItem}>
+              <div className={styles.listItemHeader}>
+                <div className={styles.listItemContent}>
+                  <div className={styles.listItemTitleRow}>
+                    <span className={styles.listItemTitle}>{post.title}</span>
+                    <span className={`${styles.badge} ${post.published ? styles.badgeSuccess : styles.badgeWarning}`}>
+                      {post.published ? "Published" : "Draft"}
+                    </span>
+                  </div>
+                  <p className={styles.listItemSubtext}>/{post.slug}</p>
+                  {post.summary && (
+                    <p className={styles.listItemMessage}>
+                      {post.summary.substring(0, 150)}
+                      {post.summary.length > 150 ? "..." : ""}
+                    </p>
+                  )}
+                  <p className={styles.listItemMeta}>
+                    {formatDate(post.created_at)} • {post.views_count} views • {post.likes_count} likes
+                  </p>
+                </div>
+                <div className={styles.listItemActions}>
                   <BlogPostActions
                     id={post.id}
                     slug={post.slug}
                     published={post.published}
                   />
-                </Row>
-              </Card>
-            ))}
-          </Column>
-        )}
-      </Column>
-    </Column>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }

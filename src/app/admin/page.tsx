@@ -1,8 +1,8 @@
 import { createAdminSupabaseClient } from "@/lib/supabase";
+import styles from "./admin.module.css";
+import Link from "next/link";
 
 async function getStats() {
-  console.log("[Admin Dashboard] Fetching stats...");
-  
   try {
     const supabase = await createAdminSupabaseClient();
 
@@ -62,104 +62,69 @@ async function getStats() {
 }
 
 export default async function AdminDashboard() {
-  console.log("[Admin Dashboard] Loading dashboard...");
   const stats = await getStats();
 
   return (
     <div>
-      <h1 style={{ 
-        fontSize: "2rem", 
-        fontWeight: "bold", 
-        marginBottom: "0.5rem",
-        color: "var(--neutral-on-background-strong, #fff)"
-      }}>
-        Dashboard
-      </h1>
-      <p style={{ 
-        marginBottom: "2rem",
-        color: "var(--neutral-on-background-weak, #888)"
-      }}>
-        Welcome to the BumiAuto admin dashboard
-      </p>
+      <div className={styles.pageHeader}>
+        <h1 className={styles.pageTitle}>Dashboard</h1>
+        <p className={styles.pageSubtitle}>
+          Welcome to the BumiAuto admin dashboard
+        </p>
+      </div>
 
-      <h2 style={{ 
-        fontSize: "1.25rem", 
-        fontWeight: "bold", 
-        marginBottom: "1rem",
-        color: "var(--neutral-on-background-strong, #fff)"
-      }}>
-        Overview
-      </h2>
-
-      <div style={{ 
-        display: "grid", 
-        gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-        gap: "1rem"
-      }}>
-        <div style={{
-          padding: "1.5rem",
-          borderRadius: "12px",
-          border: "1px solid var(--neutral-alpha-weak, #333)",
-          background: "var(--surface-background, #111)"
-        }}>
-          <p style={{ color: "var(--neutral-on-background-weak, #888)", marginBottom: "0.5rem" }}>
-            📧 Contact Submissions
-          </p>
-          <p style={{ fontSize: "2rem", fontWeight: "bold", color: "var(--neutral-on-background-strong, #fff)" }}>
-            {stats.contactsCount}
-          </p>
-          <p style={{ fontSize: "0.75rem", color: "var(--neutral-on-background-weak, #888)" }}>
-            {stats.newContactsCount} new
-          </p>
+      {/* Stats Grid */}
+      <div className={styles.statsGrid}>
+        <div className={styles.statCard}>
+          <div className={styles.statIcon}>📧</div>
+          <div className={styles.statLabel}>Contact Submissions</div>
+          <div className={styles.statValue}>{stats.contactsCount}</div>
+          <div className={styles.statSubtext}>{stats.newContactsCount} new</div>
         </div>
 
-        <div style={{
-          padding: "1.5rem",
-          borderRadius: "12px",
-          border: "1px solid var(--neutral-alpha-weak, #333)",
-          background: "var(--surface-background, #111)"
-        }}>
-          <p style={{ color: "var(--neutral-on-background-weak, #888)", marginBottom: "0.5rem" }}>
-            📋 Loan Inquiries
-          </p>
-          <p style={{ fontSize: "2rem", fontWeight: "bold", color: "var(--neutral-on-background-strong, #fff)" }}>
-            {stats.loansCount}
-          </p>
-          <p style={{ fontSize: "0.75rem", color: "var(--neutral-on-background-weak, #888)" }}>
-            {stats.pendingLoansCount} pending
-          </p>
+        <div className={styles.statCard}>
+          <div className={styles.statIcon}>📋</div>
+          <div className={styles.statLabel}>Loan Inquiries</div>
+          <div className={styles.statValue}>{stats.loansCount}</div>
+          <div className={styles.statSubtext}>{stats.pendingLoansCount} pending</div>
         </div>
 
-        <div style={{
-          padding: "1.5rem",
-          borderRadius: "12px",
-          border: "1px solid var(--neutral-alpha-weak, #333)",
-          background: "var(--surface-background, #111)"
-        }}>
-          <p style={{ color: "var(--neutral-on-background-weak, #888)", marginBottom: "0.5rem" }}>
-            📝 Blog Posts
-          </p>
-          <p style={{ fontSize: "2rem", fontWeight: "bold", color: "var(--neutral-on-background-strong, #fff)" }}>
-            {stats.postsCount}
-          </p>
-          <p style={{ fontSize: "0.75rem", color: "var(--neutral-on-background-weak, #888)" }}>
-            {stats.publishedPostsCount} published
-          </p>
+        <div className={styles.statCard}>
+          <div className={styles.statIcon}>📝</div>
+          <div className={styles.statLabel}>Blog Posts</div>
+          <div className={styles.statValue}>{stats.postsCount}</div>
+          <div className={styles.statSubtext}>{stats.publishedPostsCount} published</div>
         </div>
 
-        <div style={{
-          padding: "1.5rem",
-          borderRadius: "12px",
-          border: "1px solid var(--neutral-alpha-weak, #333)",
-          background: "var(--surface-background, #111)"
-        }}>
-          <p style={{ color: "var(--neutral-on-background-weak, #888)", marginBottom: "0.5rem" }}>
-            💬 Pending Comments
-          </p>
-          <p style={{ fontSize: "2rem", fontWeight: "bold", color: "var(--neutral-on-background-strong, #fff)" }}>
-            {stats.pendingCommentsCount}
-          </p>
+        <div className={styles.statCard}>
+          <div className={styles.statIcon}>💬</div>
+          <div className={styles.statLabel}>Pending Comments</div>
+          <div className={styles.statValue}>{stats.pendingCommentsCount}</div>
+          <div className={styles.statSubtext}>awaiting approval</div>
         </div>
+      </div>
+
+      {/* Quick Actions */}
+      <div className={styles.sectionHeader}>
+        <h2 className={styles.sectionTitle}>Quick Actions</h2>
+      </div>
+      <div className={styles.quickActions}>
+        <Link href="/admin/inquiries" className={styles.quickActionCard}>
+          <span className={styles.quickActionIcon}>📧</span>
+          <span className={styles.quickActionLabel}>View Inquiries</span>
+        </Link>
+        <Link href="/admin/blog/new" className={styles.quickActionCard}>
+          <span className={styles.quickActionIcon}>✏️</span>
+          <span className={styles.quickActionLabel}>Write New Post</span>
+        </Link>
+        <Link href="/admin/blog" className={styles.quickActionCard}>
+          <span className={styles.quickActionIcon}>📚</span>
+          <span className={styles.quickActionLabel}>Manage Blog</span>
+        </Link>
+        <a href="/" target="_blank" rel="noopener noreferrer" className={styles.quickActionCard}>
+          <span className={styles.quickActionIcon}>🌐</span>
+          <span className={styles.quickActionLabel}>View Website</span>
+        </a>
       </div>
     </div>
   );

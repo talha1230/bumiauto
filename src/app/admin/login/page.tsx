@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import styles from "../admin.module.css";
 
 export default function AdminLogin() {
   const router = useRouter();
@@ -32,7 +33,7 @@ export default function AdminLogin() {
       } else {
         setError(data.error || "Login failed");
       }
-    } catch (err) {
+    } catch {
       setError("An error occurred. Please try again.");
     } finally {
       setLoading(false);
@@ -40,128 +41,54 @@ export default function AdminLogin() {
   };
 
   return (
-    <div style={{
-      minHeight: "80vh",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      padding: "2rem"
-    }}>
-      <div style={{
-        width: "100%",
-        maxWidth: "400px",
-        padding: "2rem",
-        borderRadius: "12px",
-        border: "1px solid var(--neutral-alpha-weak, #333)",
-        background: "var(--surface-background, #111)"
-      }}>
-        <h1 style={{
-          fontSize: "1.5rem",
-          fontWeight: "bold",
-          textAlign: "center",
-          marginBottom: "0.5rem",
-          color: "var(--neutral-on-background-strong, #fff)"
-        }}>
-          Admin Login
+    <div className={styles.loginContainer}>
+      <div className={styles.loginCard}>
+        <h1 className={styles.loginTitle}>
+          🚗 BumiAuto Admin
         </h1>
-        <p style={{
-          textAlign: "center",
-          marginBottom: "1.5rem",
-          color: "var(--neutral-on-background-weak, #888)"
-        }}>
-          Sign in to access the admin dashboard
+        <p className={styles.loginSubtitle}>
+          Sign in to access the dashboard
         </p>
 
         <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: "1rem" }}>
-            <label style={{
-              display: "block",
-              marginBottom: "0.5rem",
-              fontSize: "0.875rem",
-              color: "var(--neutral-on-background-strong, #fff)"
-            }}>
-              Email
-            </label>
+          <div className={styles.formGroup}>
+            <label htmlFor="email" className={styles.formLabel}>Email</label>
             <input
+              id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              style={{
-                width: "100%",
-                padding: "0.75rem",
-                borderRadius: "8px",
-                border: "1px solid var(--neutral-alpha-weak, #333)",
-                background: "var(--surface-background, #000)",
-                color: "var(--neutral-on-background-strong, #fff)",
-                fontSize: "1rem"
-              }}
+              className={styles.formInput}
               placeholder="admin@bumiauto.com"
             />
           </div>
 
-          <div style={{ marginBottom: "1rem" }}>
-            <label style={{
-              display: "block",
-              marginBottom: "0.5rem",
-              fontSize: "0.875rem",
-              color: "var(--neutral-on-background-strong, #fff)"
-            }}>
-              Password
-            </label>
+          <div className={styles.formGroup}>
+            <label htmlFor="password" className={styles.formLabel}>Password</label>
             <input
+              id="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              style={{
-                width: "100%",
-                padding: "0.75rem",
-                borderRadius: "8px",
-                border: "1px solid var(--neutral-alpha-weak, #333)",
-                background: "var(--surface-background, #000)",
-                color: "var(--neutral-on-background-strong, #fff)",
-                fontSize: "1rem"
-              }}
+              className={styles.formInput}
               placeholder="••••••••"
             />
           </div>
 
-          {error && (
-            <p style={{
-              color: "#ef4444",
-              fontSize: "0.875rem",
-              marginBottom: "1rem"
-            }}>
-              {error}
-            </p>
-          )}
+          {error && <div className={styles.loginError}>{error}</div>}
 
           <button
             type="submit"
             disabled={loading}
-            style={{
-              width: "100%",
-              padding: "0.75rem",
-              borderRadius: "8px",
-              border: "none",
-              background: loading ? "#666" : "#22c55e",
-              color: "#fff",
-              fontSize: "1rem",
-              fontWeight: "600",
-              cursor: loading ? "not-allowed" : "pointer"
-            }}
+            className={`${styles.button} ${styles.buttonPrimary} ${styles.buttonFullWidth}`}
           >
             {loading ? "Signing in..." : "Sign In"}
           </button>
         </form>
 
-        <p style={{
-          marginTop: "1.5rem",
-          textAlign: "center",
-          fontSize: "0.75rem",
-          color: "var(--neutral-on-background-weak, #666)"
-        }}>
+        <p className={styles.loginHint}>
           Demo: admin@bumiauto.com / bumiauto0123
         </p>
       </div>
