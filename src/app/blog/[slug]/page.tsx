@@ -22,11 +22,11 @@ import { baseURL, about, blog, person } from "@/resources";
 import { formatDate } from "@/utils/formatDate";
 import { createAdminSupabaseClient } from "@/lib/supabase";
 import type { BlogPost, BlogComment } from "@/lib/supabase";
-import DOMPurify from "isomorphic-dompurify";
 import type { Metadata } from "next";
 import React from "react";
 import { LikeButton } from "@/components/blog/LikeButton";
 import { CommentSection } from "@/components/blog/CommentSection";
+import { BlogContent } from "@/components/blog/BlogContent";
 import styles from "./blogPost.module.css";
 
 async function getBlogPost(slug: string): Promise<BlogPost | null> {
@@ -229,10 +229,9 @@ export default async function Blog({ params }: { params: Promise<{ slug: string 
           )}
 
           {/* Article Content */}
-          <article
-            className={styles.article}
-            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }}
-          />
+          <article className={styles.article}>
+            <BlogContent content={post.content} />
+          </article>
 
           {/* Engagement Section */}
           <div className={styles.engagement}>
