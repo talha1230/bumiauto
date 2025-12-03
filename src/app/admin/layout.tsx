@@ -1,62 +1,4 @@
 import { getAdminSession } from "@/lib/admin-auth";
-import { Column, Row, Text, SmartLink, Icon } from "@once-ui-system/core";
-import { LogoutButton } from "@/components/admin/LogoutButton";
-
-async function AdminSidebar() {
-  const session = await getAdminSession();
-
-  if (!session) {
-    return null;
-  }
-
-  const navItems = [
-    { href: "/admin", label: "Dashboard", icon: "home" },
-    { href: "/admin/inquiries", label: "Inquiries", icon: "mail" },
-    { href: "/admin/blog", label: "Blog", icon: "document" },
-  ];
-
-  return (
-    <Column
-      padding="l"
-      gap="m"
-      style={{
-        width: "250px",
-        borderRight: "1px solid var(--neutral-alpha-weak)",
-        minHeight: "calc(100vh - 80px)",
-      }}
-    >
-      <Column gap="s" marginBottom="l">
-        <Text variant="heading-strong-m">Admin Panel</Text>
-        <Text variant="body-default-xs" onBackground="neutral-weak">
-          {session.email}
-        </Text>
-      </Column>
-
-      <Column gap="xs">
-        {navItems.map((item) => (
-          <SmartLink
-            key={item.href}
-            href={item.href}
-            style={{
-              padding: "12px 16px",
-              borderRadius: "8px",
-              display: "flex",
-              alignItems: "center",
-              gap: "12px",
-            }}
-          >
-            <Icon name={item.icon as any} size="s" />
-            <Text variant="body-default-m">{item.label}</Text>
-          </SmartLink>
-        ))}
-      </Column>
-
-      <Column style={{ marginTop: "auto" }}>
-        <LogoutButton />
-      </Column>
-    </Column>
-  );
-}
 
 export default async function AdminLayout({
   children,
@@ -65,17 +7,101 @@ export default async function AdminLayout({
 }) {
   const session = await getAdminSession();
 
-  // If not logged in and not on login page, the individual page will redirect
+  // If not logged in, just render children (login page)
+  // Middleware handles the redirect
   if (!session) {
     return <>{children}</>;
   }
 
+  // Logged in - show admin layout with sidebar
   return (
-    <Row fillWidth>
-      <AdminSidebar />
-      <Column padding="l" fillWidth style={{ minHeight: "calc(100vh - 80px)" }}>
+    <div style={{ display: "flex", minHeight: "calc(100vh - 80px)" }}>
+      {/* Sidebar */}
+      <div style={{
+        width: "250px",
+        padding: "1.5rem",
+        borderRight: "1px solid var(--neutral-alpha-weak, #333)",
+        display: "flex",
+        flexDirection: "column",
+        gap: "1rem"
+      }}>
+        <div style={{ marginBottom: "1.5rem" }}>
+          <h2 style={{ 
+            fontSize: "1.25rem", 
+            fontWeight: "bold",
+            color: "var(--neutral-on-background-strong, #fff)"
+          }}>
+            Admin Panel
+          </h2>
+          <p style={{ 
+            fontSize: "0.75rem", 
+            color: "var(--neutral-on-background-weak, #888)" 
+          }}>
+            {session.email}
+          </p>
+        </div>
+
+        <nav style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+          <a href="/admin" style={{
+            padding: "0.75rem 1rem",
+            borderRadius: "8px",
+            color: "var(--neutral-on-background-strong, #fff)",
+            textDecoration: "none",
+            display: "flex",
+            alignItems: "center",
+            gap: "0.75rem"
+          }}>
+            🏠 Dashboard
+          </a>
+          <a href="/admin/inquiries" style={{
+            padding: "0.75rem 1rem",
+            borderRadius: "8px",
+            color: "var(--neutral-on-background-strong, #fff)",
+            textDecoration: "none",
+            display: "flex",
+            alignItems: "center",
+            gap: "0.75rem"
+          }}>
+            📧 Inquiries
+          </a>
+          <a href="/admin/blog" style={{
+            padding: "0.75rem 1rem",
+            borderRadius: "8px",
+            color: "var(--neutral-on-background-strong, #fff)",
+            textDecoration: "none",
+            display: "flex",
+            alignItems: "center",
+            gap: "0.75rem"
+          }}>
+            📝 Blog
+          </a>
+        </nav>
+
+        <div style={{ marginTop: "auto" }}>
+          <form action="/api/admin/logout" method="POST">
+            <button type="submit" style={{
+              width: "100%",
+              padding: "0.75rem 1rem",
+              borderRadius: "8px",
+              border: "1px solid var(--neutral-alpha-weak, #333)",
+              background: "transparent",
+              color: "var(--neutral-on-background-strong, #fff)",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "0.5rem"
+            }}>
+              🚪 Logout
+            </button>
+          </form>
+        </div>
+      </div>
+
+      {/* Main content */}
+      <div style={{ flex: 1, padding: "1.5rem" }}>
         {children}
-      </Column>
-    </Row>
+      </div>
+    </div>
   );
 }

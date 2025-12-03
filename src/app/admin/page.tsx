@@ -1,80 +1,38 @@
-import { requireAdminSession } from "@/lib/admin-auth";
 import { createAdminSupabaseClient } from "@/lib/supabase";
-import {
-  Column,
-  Heading,
-  Text,
-  Row,
-  Card,
-  Icon,
-} from "@once-ui-system/core";
-
-interface StatsCardProps {
-  title: string;
-  value: number;
-  icon: string;
-  description?: string;
-}
-
-function StatsCard({ title, value, icon, description }: StatsCardProps) {
-  return (
-    <Card padding="l" radius="l" border="neutral-alpha-weak" fillWidth>
-      <Row gap="m" vertical="center">
-        <Icon name={icon as any} size="l" onBackground="brand-medium" />
-        <Column gap="xs">
-          <Text variant="body-default-s" onBackground="neutral-weak">
-            {title}
-          </Text>
-          <Heading variant="heading-strong-l">{value}</Heading>
-          {description && (
-            <Text variant="body-default-xs" onBackground="neutral-weak">
-              {description}
-            </Text>
-          )}
-        </Column>
-      </Row>
-    </Card>
-  );
-}
 
 async function getStats() {
+  console.log("[Admin Dashboard] Fetching stats...");
+  
   try {
     const supabase = await createAdminSupabaseClient();
 
-    // Get contact submissions count
     const { count: contactsCount } = await supabase
       .from("contact_submissions")
       .select("*", { count: "exact", head: true });
 
-    // Get new contacts count
     const { count: newContactsCount } = await supabase
       .from("contact_submissions")
       .select("*", { count: "exact", head: true })
       .eq("status", "new");
 
-    // Get loan inquiries count
     const { count: loansCount } = await supabase
       .from("loan_inquiries")
       .select("*", { count: "exact", head: true });
 
-    // Get pending loans count
     const { count: pendingLoansCount } = await supabase
       .from("loan_inquiries")
       .select("*", { count: "exact", head: true })
       .eq("status", "pending");
 
-    // Get blog posts count
     const { count: postsCount } = await supabase
       .from("blog_posts")
       .select("*", { count: "exact", head: true });
 
-    // Get published posts count
     const { count: publishedPostsCount } = await supabase
       .from("blog_posts")
       .select("*", { count: "exact", head: true })
       .eq("published", true);
 
-    // Get pending comments count
     const { count: pendingCommentsCount } = await supabase
       .from("blog_comments")
       .select("*", { count: "exact", head: true })
@@ -90,7 +48,7 @@ async function getStats() {
       pendingCommentsCount: pendingCommentsCount || 0,
     };
   } catch (error) {
-    console.error("Error fetching stats:", error);
+    console.error("[Admin Dashboard] Error fetching stats:", error);
     return {
       contactsCount: 0,
       newContactsCount: 0,
@@ -104,46 +62,105 @@ async function getStats() {
 }
 
 export default async function AdminDashboard() {
-  await requireAdminSession();
+  console.log("[Admin Dashboard] Loading dashboard...");
   const stats = await getStats();
 
   return (
-    <Column gap="xl" fillWidth>
-      <Column gap="s">
-        <Heading variant="display-strong-m">Dashboard</Heading>
-        <Text variant="body-default-l" onBackground="neutral-weak">
-          Welcome to the BumiAuto admin dashboard
-        </Text>
-      </Column>
+    <div>
+      <h1 style={{ 
+        fontSize: "2rem", 
+        fontWeight: "bold", 
+        marginBottom: "0.5rem",
+        color: "var(--neutral-on-background-strong, #fff)"
+      }}>
+        Dashboard
+      </h1>
+      <p style={{ 
+        marginBottom: "2rem",
+        color: "var(--neutral-on-background-weak, #888)"
+      }}>
+        Welcome to the BumiAuto admin dashboard
+      </p>
 
-      <Column gap="m">
-        <Heading variant="heading-strong-m">Overview</Heading>
-        <Row gap="m" wrap>
-          <StatsCard
-            title="Contact Submissions"
-            value={stats.contactsCount}
-            icon="mail"
-            description={`${stats.newContactsCount} new`}
-          />
-          <StatsCard
-            title="Loan Inquiries"
-            value={stats.loansCount}
-            icon="document"
-            description={`${stats.pendingLoansCount} pending`}
-          />
-          <StatsCard
-            title="Blog Posts"
-            value={stats.postsCount}
-            icon="edit"
-            description={`${stats.publishedPostsCount} published`}
-          />
-          <StatsCard
-            title="Pending Comments"
-            value={stats.pendingCommentsCount}
-            icon="chat"
-          />
-        </Row>
-      </Column>
-    </Column>
+      <h2 style={{ 
+        fontSize: "1.25rem", 
+        fontWeight: "bold", 
+        marginBottom: "1rem",
+        color: "var(--neutral-on-background-strong, #fff)"
+      }}>
+        Overview
+      </h2>
+
+      <div style={{ 
+        display: "grid", 
+        gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+        gap: "1rem"
+      }}>
+        <div style={{
+          padding: "1.5rem",
+          borderRadius: "12px",
+          border: "1px solid var(--neutral-alpha-weak, #333)",
+          background: "var(--surface-background, #111)"
+        }}>
+          <p style={{ color: "var(--neutral-on-background-weak, #888)", marginBottom: "0.5rem" }}>
+            📧 Contact Submissions
+          </p>
+          <p style={{ fontSize: "2rem", fontWeight: "bold", color: "var(--neutral-on-background-strong, #fff)" }}>
+            {stats.contactsCount}
+          </p>
+          <p style={{ fontSize: "0.75rem", color: "var(--neutral-on-background-weak, #888)" }}>
+            {stats.newContactsCount} new
+          </p>
+        </div>
+
+        <div style={{
+          padding: "1.5rem",
+          borderRadius: "12px",
+          border: "1px solid var(--neutral-alpha-weak, #333)",
+          background: "var(--surface-background, #111)"
+        }}>
+          <p style={{ color: "var(--neutral-on-background-weak, #888)", marginBottom: "0.5rem" }}>
+            📋 Loan Inquiries
+          </p>
+          <p style={{ fontSize: "2rem", fontWeight: "bold", color: "var(--neutral-on-background-strong, #fff)" }}>
+            {stats.loansCount}
+          </p>
+          <p style={{ fontSize: "0.75rem", color: "var(--neutral-on-background-weak, #888)" }}>
+            {stats.pendingLoansCount} pending
+          </p>
+        </div>
+
+        <div style={{
+          padding: "1.5rem",
+          borderRadius: "12px",
+          border: "1px solid var(--neutral-alpha-weak, #333)",
+          background: "var(--surface-background, #111)"
+        }}>
+          <p style={{ color: "var(--neutral-on-background-weak, #888)", marginBottom: "0.5rem" }}>
+            📝 Blog Posts
+          </p>
+          <p style={{ fontSize: "2rem", fontWeight: "bold", color: "var(--neutral-on-background-strong, #fff)" }}>
+            {stats.postsCount}
+          </p>
+          <p style={{ fontSize: "0.75rem", color: "var(--neutral-on-background-weak, #888)" }}>
+            {stats.publishedPostsCount} published
+          </p>
+        </div>
+
+        <div style={{
+          padding: "1.5rem",
+          borderRadius: "12px",
+          border: "1px solid var(--neutral-alpha-weak, #333)",
+          background: "var(--surface-background, #111)"
+        }}>
+          <p style={{ color: "var(--neutral-on-background-weak, #888)", marginBottom: "0.5rem" }}>
+            💬 Pending Comments
+          </p>
+          <p style={{ fontSize: "2rem", fontWeight: "bold", color: "var(--neutral-on-background-strong, #fff)" }}>
+            {stats.pendingCommentsCount}
+          </p>
+        </div>
+      </div>
+    </div>
   );
 }

@@ -22,6 +22,10 @@ const routes: RoutesConfig = {
   "/services": true,
   "/contact": true,
   "/blog": true,
+  "/admin": true,
+  "/admin/login": true,
+  "/admin/blog": true,
+  "/admin/inquiries": true,
 };
 
 const display: DisplayConfig = {
