@@ -19,7 +19,7 @@ import {
 export const dynamic = 'force-dynamic';
 import { baseURL, about, blog, person } from "@/resources";
 import { formatDate } from "@/utils/formatDate";
-import { createServerSupabaseClient, createAdminSupabaseClient } from "@/lib/supabase";
+import { createAdminSupabaseClient } from "@/lib/supabase";
 import type { BlogPost, BlogComment } from "@/lib/supabase";
 import DOMPurify from "isomorphic-dompurify";
 import { Metadata } from "next";
@@ -29,7 +29,7 @@ import { CommentSection } from "@/components/blog/CommentSection";
 
 async function getBlogPost(slug: string): Promise<BlogPost | null> {
   try {
-    const supabase = await createServerSupabaseClient();
+    const supabase = await createAdminSupabaseClient();
 
     const { data: post } = await supabase
       .from("blog_posts")
@@ -47,7 +47,7 @@ async function getBlogPost(slug: string): Promise<BlogPost | null> {
 
 async function getApprovedComments(postId: string): Promise<BlogComment[]> {
   try {
-    const supabase = await createServerSupabaseClient();
+    const supabase = await createAdminSupabaseClient();
 
     const { data: comments } = await supabase
       .from("blog_comments")
@@ -76,7 +76,7 @@ async function incrementViewCount(postId: string) {
 
 async function getRecentPosts(excludeSlug: string): Promise<BlogPost[]> {
   try {
-    const supabase = await createServerSupabaseClient();
+    const supabase = await createAdminSupabaseClient();
 
     const { data: posts } = await supabase
       .from("blog_posts")

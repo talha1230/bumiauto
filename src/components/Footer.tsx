@@ -20,7 +20,7 @@ export const Footer = () => {
     ],
     resources: [
       { label: "FAQs", href: "/about#faq" },
-      { label: "Apply Now", href: "/contact" },
+      { label: "Apply Now", href: "/apply" },
       { label: "How It Works", href: "/services#flexible" },
     ],
     legal: [

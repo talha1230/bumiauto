@@ -55,7 +55,7 @@ export const Header = () => {
           <ThemeToggle />
           <div className={styles.ctaButton}>
             <Button
-              href="/contact"
+              href="/apply"
               variant="primary"
               size="m"
             >
@@ -101,7 +101,7 @@ export const Header = () => {
           </div>
           <div className={styles.mobileCta}>
             <Button
-              href="/contact"
+              href="/apply"
               variant="primary"
               size="l"
               fillWidth
