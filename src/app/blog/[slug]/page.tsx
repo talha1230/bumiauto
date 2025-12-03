@@ -12,7 +12,8 @@ import {
   SmartLink,
   Avatar,
   Media,
-  Line,
+  Flex,
+  Tag,
 } from "@once-ui-system/core";
 
 // Force dynamic rendering since we use cookies for Supabase
@@ -22,10 +23,11 @@ import { formatDate } from "@/utils/formatDate";
 import { createAdminSupabaseClient } from "@/lib/supabase";
 import type { BlogPost, BlogComment } from "@/lib/supabase";
 import DOMPurify from "isomorphic-dompurify";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import React from "react";
 import { LikeButton } from "@/components/blog/LikeButton";
 import { CommentSection } from "@/components/blog/CommentSection";
+import styles from "./blogPost.module.css";
 
 async function getBlogPost(slug: string): Promise<BlogPost | null> {
   try {
@@ -135,10 +137,10 @@ export default async function Blog({ params }: { params: Promise<{ slug: string 
   const recentPosts = await getRecentPosts(post.slug);
 
   return (
-    <Row fillWidth>
-      <Row maxWidth={12} m={{ hide: true }} />
-      <Row fillWidth horizontal="center">
-        <Column as="section" maxWidth="m" horizontal="center" gap="l" paddingTop="24">
+    <Flex fillWidth direction="column" horizontal="center">
+      <div className={styles.container}>
+        {/* Main Content */}
+        <div className={styles.mainContent}>
           <Schema
             as="blogPosting"
             baseURL={baseURL}
@@ -157,110 +159,147 @@ export default async function Blog({ params }: { params: Promise<{ slug: string 
               image: `${baseURL}${person.avatar}`,
             }}
           />
-          <Column maxWidth="s" gap="16" horizontal="center" align="center">
-            <SmartLink href="/blog">
-              <Text variant="label-strong-m">Blog</Text>
-            </SmartLink>
-            <Text variant="body-default-xs" onBackground="neutral-weak" marginBottom="12">
-              {post.published_at && formatDate(post.published_at)}
-            </Text>
-            <Heading variant="display-strong-m">{post.title}</Heading>
-          </Column>
-          <Row marginBottom="32" horizontal="center">
-            <Row gap="16" vertical="center">
-              <Avatar size="s" src={person.avatar} />
-              <Text variant="label-default-m" onBackground="brand-weak">
-                {person.name}
-              </Text>
-            </Row>
-          </Row>
-          {post.image_url && (
-            <Media
-              src={post.image_url}
-              alt={post.title}
-              aspectRatio="16/9"
-              priority
-              sizes="(min-width: 768px) 100vw, 768px"
-              border="neutral-alpha-weak"
-              radius="l"
-              marginTop="12"
-              marginBottom="8"
-            />
-          )}
-          <Column as="article" maxWidth="s">
-            <div
-              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }}
-              style={{ lineHeight: 1.7 }}
-            />
-          </Column>
 
-          {/* Like Button and Stats */}
-          <Row gap="m" vertical="center" marginTop="24">
+          {/* Header */}
+          <div className={styles.header}>
+            <SmartLink href="/blog" className={styles.backLink}>
+              <Icon name="arrowLeft" size="s" />
+              <Text variant="label-strong-s">Back to Blog</Text>
+            </SmartLink>
+
+            {post.tag && (
+              <Tag variant="brand" size="m" label={post.tag} style={{ marginBottom: "16px" }} />
+            )}
+
+            <Heading variant="display-strong-l" style={{ marginBottom: "16px" }}>
+              {post.title}
+            </Heading>
+
+            {post.summary && (
+              <Text variant="body-default-l" onBackground="neutral-weak" style={{ marginBottom: "24px" }}>
+                {post.summary}
+              </Text>
+            )}
+
+            <div className={styles.meta}>
+              <div className={styles.author}>
+                <Avatar size="s" src={person.avatar} />
+                <Column gap="2">
+                  <Text variant="label-strong-s">{person.name}</Text>
+                  <Text variant="body-default-xs" onBackground="neutral-weak">
+                    {post.published_at && formatDate(post.published_at)}
+                  </Text>
+                </Column>
+              </div>
+              <Row gap="16">
+                <Row gap="4" vertical="center">
+                  <Icon name="eye" size="xs" onBackground="neutral-weak" />
+                  <Text variant="body-default-xs" onBackground="neutral-weak">
+                    {post.views_count} views
+                  </Text>
+                </Row>
+                <Row gap="4" vertical="center">
+                  <Icon name="heart" size="xs" onBackground="neutral-weak" />
+                  <Text variant="body-default-xs" onBackground="neutral-weak">
+                    {post.likes_count} likes
+                  </Text>
+                </Row>
+              </Row>
+            </div>
+          </div>
+
+          {/* Featured Image */}
+          {post.image_url && (
+            <div className={styles.featuredImage}>
+              <Media
+                src={post.image_url}
+                alt={post.title}
+                aspectRatio="16/9"
+                priority
+                sizes="(max-width: 768px) 100vw, 768px"
+                radius="l"
+              />
+            </div>
+          )}
+
+          {/* Article Content */}
+          <article
+            className={styles.article}
+            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }}
+          />
+
+          {/* Engagement Section */}
+          <div className={styles.engagement}>
             <LikeButton postId={post.id} initialLikes={post.likes_count} />
-            <Text variant="body-default-s" onBackground="neutral-weak">
-              {post.views_count} views
-            </Text>
-          </Row>
+            <div className={styles.stats}>
+              <div className={styles.stat}>
+                <Icon name="eye" size="s" onBackground="neutral-weak" />
+                <Text variant="body-default-s" onBackground="neutral-weak">
+                  {post.views_count} views
+                </Text>
+              </div>
+              <div className={styles.stat}>
+                <Icon name="messageCircle" size="s" onBackground="neutral-weak" />
+                <Text variant="body-default-s" onBackground="neutral-weak">
+                  {comments.length} comments
+                </Text>
+              </div>
+            </div>
+          </div>
 
           {/* Comment Section */}
           <CommentSection postId={post.id} comments={comments} />
 
+          {/* Recent Posts */}
           {recentPosts.length > 0 && (
-            <Column fillWidth gap="40" horizontal="center" marginTop="40">
-              <Line maxWidth="40" />
-              <Heading as="h2" variant="heading-strong-xl" marginBottom="24">
-                Recent posts
+            <div className={styles.recentPosts}>
+              <Heading variant="heading-strong-xl" className={styles.recentPostsTitle}>
+                More Articles
               </Heading>
-              <Row gap="m" wrap>
+              <div className={styles.recentPostsGrid}>
                 {recentPosts.map((recentPost) => (
                   <SmartLink
                     key={recentPost.id}
                     href={`/blog/${recentPost.slug}`}
-                    style={{ textDecoration: "none", flex: 1, minWidth: "250px" }}
+                    className={styles.recentPostCard}
                   >
-                    <Column gap="s" padding="m" border="neutral-alpha-weak" radius="m">
-                      {recentPost.image_url && (
-                        <Media
-                          src={recentPost.image_url}
-                          alt={recentPost.title}
-                          aspectRatio="16/9"
-                          radius="s"
-                        />
-                      )}
-                      <Text variant="heading-strong-s">{recentPost.title}</Text>
-                      <Text variant="body-default-xs" onBackground="neutral-weak">
+                    {recentPost.image_url && (
+                      <Media
+                        src={recentPost.image_url}
+                        alt={recentPost.title}
+                        aspectRatio="16/9"
+                        className={styles.recentPostImage}
+                      />
+                    )}
+                    <div className={styles.recentPostContent}>
+                      <div className={styles.recentPostTitle}>{recentPost.title}</div>
+                      <div className={styles.recentPostDate}>
                         {recentPost.published_at && formatDate(recentPost.published_at)}
-                      </Text>
-                    </Column>
+                      </div>
+                    </div>
                   </SmartLink>
                 ))}
-              </Row>
-            </Column>
+              </div>
+            </div>
           )}
-          <ScrollToHash />
-        </Column>
-      </Row>
-      <Column
-        maxWidth={12}
-        paddingLeft="40"
-        fitHeight
-        position="sticky"
-        top="80"
-        gap="16"
-        m={{ hide: true }}
-      >
-        <Row
-          gap="12"
-          paddingLeft="2"
-          vertical="center"
-          onBackground="neutral-medium"
-          textVariant="label-default-s"
-        >
-          <Icon name="document" size="xs" />
-          On this page
-        </Row>
-        <HeadingNav fitHeight />
-      </Column>
-    </Row>
+        </div>
+
+        {/* Sidebar - Hidden on Mobile */}
+        <div className={styles.sidebar}>
+          <Row
+            gap="12"
+            paddingLeft="2"
+            vertical="center"
+            onBackground="neutral-medium"
+            textVariant="label-default-s"
+          >
+            <Icon name="document" size="xs" />
+            On this page
+          </Row>
+          <HeadingNav fitHeight />
+        </div>
+      </div>
+      <ScrollToHash />
+    </Flex>
   );
 }
