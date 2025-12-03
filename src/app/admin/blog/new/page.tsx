@@ -28,16 +28,20 @@ export default function NewBlogPost() {
   const generateSlug = (title: string) => {
     return title
       .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/(^-|-$)/g, "");
+      .trim()
+      .replace(/[^a-z0-9\s-]/g, "") // Remove special characters
+      .replace(/\s+/g, "-") // Replace spaces with hyphens
+      .replace(/-+/g, "-") // Replace multiple hyphens with single
+      .replace(/(^-|-$)/g, ""); // Remove leading/trailing hyphens
   };
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const title = e.target.value;
+    const slug = generateSlug(title);
     setFormData((prev) => ({
       ...prev,
       title,
-      slug: prev.slug || generateSlug(title),
+      slug,
     }));
   };
 
@@ -89,15 +93,12 @@ export default function NewBlogPost() {
             required
           />
 
-          <Input
-            id="slug"
-            label="Slug"
-            value={formData.slug}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, slug: e.target.value }))
-            }
-            required
-          />
+          <Column gap="xs">
+            <Text variant="label-default-s">Slug (auto-generated)</Text>
+            <div className={styles.slugPreview}>
+              /blog/{formData.slug || "your-post-slug"}
+            </div>
+          </Column>
 
           <Input
             id="summary"

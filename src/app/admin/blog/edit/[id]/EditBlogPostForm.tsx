@@ -11,6 +11,7 @@ import {
   Button,
   Row,
 } from "@once-ui-system/core";
+import styles from "../../../admin.module.css";
 
 interface EditBlogPostFormProps {
   post: BlogPost;
@@ -28,6 +29,26 @@ export function EditBlogPostForm({ post }: EditBlogPostFormProps) {
     image_url: post.image_url || "",
     tag: post.tag || "",
   });
+
+  const generateSlug = (title: string) => {
+    return title
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/(^-|-$)/g, "");
+  };
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const title = e.target.value;
+    const slug = generateSlug(title);
+    setFormData((prev) => ({
+      ...prev,
+      title,
+      slug,
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -73,21 +94,16 @@ export function EditBlogPostForm({ post }: EditBlogPostFormProps) {
             id="title"
             label="Title"
             value={formData.title}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, title: e.target.value }))
-            }
+            onChange={handleTitleChange}
             required
           />
 
-          <Input
-            id="slug"
-            label="Slug"
-            value={formData.slug}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, slug: e.target.value }))
-            }
-            required
-          />
+          <Column gap="xs">
+            <Text variant="label-default-s">Slug (auto-generated from title)</Text>
+            <div className={styles.slugPreview}>
+              /blog/{formData.slug || "your-post-slug"}
+            </div>
+          </Column>
 
           <Input
             id="summary"
@@ -125,17 +141,7 @@ export function EditBlogPostForm({ post }: EditBlogPostFormProps) {
               }
               required
               rows={15}
-              style={{
-                width: "100%",
-                padding: "12px",
-                borderRadius: "8px",
-                border: "1px solid var(--neutral-alpha-weak)",
-                background: "var(--surface-background)",
-                color: "var(--neutral-on-background-strong)",
-                fontFamily: "monospace",
-                fontSize: "14px",
-                resize: "vertical",
-              }}
+              className={styles.formTextareaCode}
               placeholder="Write your blog post content here. HTML tags are supported."
             />
           </Column>

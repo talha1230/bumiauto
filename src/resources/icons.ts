@@ -7,6 +7,7 @@ import {
   HiEnvelope,
   HiCalendarDays,
   HiArrowRight,
+  HiArrowLeft,
   HiOutlineEye,
   HiOutlineEyeSlash,
   HiOutlineDocument,
@@ -30,6 +31,8 @@ import {
   HiBriefcase,
   HiWallet,
   HiReceiptPercent,
+  HiCreditCard,
+  HiQuestionMarkCircle,
 } from "react-icons/hi2";
 
 import {
@@ -54,6 +57,7 @@ import { FaDiscord, FaGithub, FaLinkedin, FaX, FaThreads, FaXTwitter, FaFacebook
 export const iconLibrary: Record<string, IconType> = {
   arrowUpRight: HiArrowUpRight,
   arrowRight: HiArrowRight,
+  arrowLeft: HiArrowLeft,
   email: HiEnvelope,
   globe: HiOutlineGlobeAsiaAustralia,
   person: PiUserCircleDuotone,
@@ -104,6 +108,9 @@ export const iconLibrary: Record<string, IconType> = {
   percent: HiReceiptPercent,
   bike: PiMotorcycleDuotone,
   target: PiTargetDuotone,
+  creditCard: HiCreditCard,
+  helpCircle: HiQuestionMarkCircle,
+  messageCircle: HiChatBubbleLeftRight,
 };
 
 export type IconLibrary = typeof iconLibrary;
