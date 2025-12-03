@@ -1,6 +1,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import { createServerSupabaseClient } from "@/lib/supabase";
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,6 +15,29 @@ export async function POST(request: NextRequest) {
         { error: "Missing required fields" },
         { status: 400 }
       );
+    }
+
+    // Save to Supabase
+    try {
+      const supabase = await createServerSupabaseClient();
+      const { error: dbError } = await supabase
+        .from("contact_submissions")
+        .insert({
+          name,
+          email,
+          phone: phone || null,
+          subject: subject || null,
+          message,
+          status: "new",
+        });
+
+      if (dbError) {
+        console.error("Error saving contact to Supabase:", dbError);
+        // Continue with email even if DB save fails
+      }
+    } catch (dbError) {
+      console.error("Error connecting to Supabase:", dbError);
+      // Continue with email even if DB save fails
     }
 
     // Email content

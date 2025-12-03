@@ -151,8 +151,8 @@ export default function Home() {
           {/* CTA Buttons */}
           <RevealFx translateY="16" delay={0.3}>
             <Flex gap="16" wrap horizontal="center">
-              {routes["/contact"] && (
-                <Button href="/contact" variant="primary" size="l">
+              {routes["/apply"] && (
+                <Button href="/apply" variant="primary" size="l">
                   Apply Now
                 </Button>
               )}
@@ -429,7 +429,7 @@ export default function Home() {
             surprises – just simple, accessible financing.
           </Text>
           <Flex gap="16" wrap horizontal="center">
-            <Button href="/contact" variant="primary" size="l">
+            <Button href="/apply" variant="primary" size="l">
               Apply Now
             </Button>
             <Button

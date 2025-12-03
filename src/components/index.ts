@@ -13,3 +13,7 @@ export { CustomMDX } from "@/components/mdx";
 export { LoanInquiryForm } from "@/components/forms/LoanInquiryForm";
 export { ContactForm } from "@/components/forms/ContactForm";
 export { WhatsAppButton } from "@/components/WhatsAppButton";
+
+// Blog components
+export { LikeButton } from "@/components/blog/LikeButton";
+export { CommentSection } from "@/components/blog/CommentSection";
