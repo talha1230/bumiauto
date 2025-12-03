@@ -11,6 +11,7 @@ import {
 } from "@once-ui-system/core";
 import { LoanInquiryForm } from "@/components/forms/LoanInquiryForm";
 import { baseURL } from "@/resources";
+import styles from "./apply.module.css";
 
 export async function generateMetadata() {
   return Meta.generate({
@@ -28,22 +29,22 @@ const features = [
   {
     icon: "clock",
     title: "Quick Approval",
-    description: "Get approved within 24-48 hours with minimal documentation",
+    description: "Get approved within 24-48 hours",
   },
   {
     icon: "creditCard",
     title: "Competitive Rates",
-    description: "Enjoy competitive interest rates tailored to your profile",
+    description: "Best rates tailored to you",
   },
   {
     icon: "calendar",
     title: "Flexible Terms",
-    description: "Choose repayment periods from 12 to 60 months",
+    description: "12 to 60 month options",
   },
   {
     icon: "shield",
     title: "Secure Process",
-    description: "Your information is protected with bank-level security",
+    description: "Bank-level security",
   },
 ];
 
@@ -74,29 +75,49 @@ const steps = [
   {
     number: "1",
     title: "Fill Application",
-    description: "Complete the simple form below with your details",
+    description: "Complete the form with your details",
   },
   {
     number: "2",
     title: "Quick Review",
-    description: "Our team reviews your application within 24 hours",
+    description: "We review within 24 hours",
   },
   {
     number: "3",
     title: "Get Approved",
-    description: "Receive your approval and sign the agreement",
+    description: "Sign your agreement",
   },
   {
     number: "4",
     title: "Receive Funds",
-    description: "Get your financing disbursed quickly",
+    description: "Quick disbursement",
+  },
+];
+
+// FAQs
+const faqs = [
+  {
+    q: "What documents do I need?",
+    a: "You'll need a valid IC, proof of income (payslip or bank statement), and a copy of your utility bill for address verification.",
+  },
+  {
+    q: "How long does approval take?",
+    a: "Most applications are reviewed within 24-48 hours. Once approved, funds can be disbursed within 1-3 business days.",
+  },
+  {
+    q: "What is the minimum income requirement?",
+    a: "We consider applications from individuals with a minimum monthly income of RM 1,500. Other factors may also be considered.",
+  },
+  {
+    q: "Can I apply if I have existing loans?",
+    a: "Yes, you can still apply. Our team will assess your debt-to-income ratio to determine your eligibility.",
   },
 ];
 
 export default function ApplyPage() {
   return (
     <Flex fillWidth direction="column" horizontal="center">
-      {/* Hero Section */}
+      {/* Hero + Form Section - Two Column Layout on Desktop */}
       <Flex
         as="section"
         fillWidth
@@ -106,80 +127,128 @@ export default function ApplyPage() {
         paddingY="xl"
         background="brand-alpha-weak"
       >
-        <Column
-          maxWidth="l"
-          fillWidth
-          gap="32"
-          horizontal="center"
-          align="center"
-          paddingY="l"
-        >
-          <RevealFx translateY="4">
-            <Text variant="label-strong-s" onBackground="brand-medium">
-              LOAN APPLICATION
-            </Text>
-          </RevealFx>
-          <RevealFx translateY="8" delay={0.1}>
-            <Heading variant="display-strong-xl" align="center">
-              Start Your Journey Today
-            </Heading>
-          </RevealFx>
-          <RevealFx translateY="12" delay={0.2}>
-            <Text
-              variant="heading-default-l"
-              onBackground="neutral-weak"
-              align="center"
-              style={{ maxWidth: "600px" }}
+        <div className={styles.heroFormGrid}>
+          {/* Left: Hero Content */}
+          <Column gap="24" className={styles.heroContent}>
+            <RevealFx translateY="4">
+              <Text variant="label-strong-s" onBackground="brand-medium">
+                LOAN APPLICATION
+              </Text>
+            </RevealFx>
+            <RevealFx translateY="8" delay={0.1}>
+              <Heading variant="display-strong-l">
+                Start Your Journey Today
+              </Heading>
+            </RevealFx>
+            <RevealFx translateY="12" delay={0.2}>
+              <Text
+                variant="body-default-l"
+                onBackground="neutral-weak"
+              >
+                Apply for financing in minutes. Fast approval, competitive rates,
+                and flexible repayment options.
+              </Text>
+            </RevealFx>
+
+            {/* Quick Features - Horizontal on Desktop */}
+            <RevealFx translateY="16" delay={0.3}>
+              <div className={styles.quickFeatures}>
+                {features.map((feature) => (
+                  <Row key={feature.title} gap="8" vertical="center">
+                    <Flex
+                      width="32"
+                      height="32"
+                      radius="s"
+                      background="brand-alpha-medium"
+                      horizontal="center"
+                      vertical="center"
+                    >
+                      <Icon name={feature.icon} size="s" onBackground="brand-strong" />
+                    </Flex>
+                    <Column gap="2">
+                      <Text variant="label-strong-s">{feature.title}</Text>
+                      <Text variant="body-default-xs" onBackground="neutral-weak">
+                        {feature.description}
+                      </Text>
+                    </Column>
+                  </Row>
+                ))}
+              </div>
+            </RevealFx>
+          </Column>
+
+          {/* Right: Application Form */}
+          <RevealFx translateY="16" delay={0.2} className={styles.formContainer}>
+            <Card
+              padding="24"
+              radius="l"
+              background="page"
+              border="neutral-alpha-weak"
+              fillWidth
             >
-              Apply for financing in minutes. Fast approval, competitive rates,
-              and flexible repayment options to suit your needs.
-            </Text>
+              <Column gap="16">
+                <Column gap="4">
+                  <Heading variant="heading-strong-l">Apply Now</Heading>
+                  <Text variant="body-default-s" onBackground="neutral-weak">
+                    Fill out the form to start your application
+                  </Text>
+                </Column>
+                <LoanInquiryForm />
+              </Column>
+            </Card>
           </RevealFx>
-        </Column>
+        </div>
       </Flex>
 
-      {/* Features */}
+      {/* How It Works - Compact */}
       <Flex
         as="section"
         fillWidth
         direction="column"
         horizontal="center"
         paddingX="l"
-        paddingY="xl"
+        paddingY="l"
       >
-        <Column maxWidth="l" fillWidth>
-          <div className="contact-methods-grid">
-            {features.map((feature, index) => (
-              <RevealFx key={feature.title} translateY="16" delay={index * 0.1}>
+        <Column maxWidth="l" fillWidth gap="24">
+          <Column horizontal="center" gap="8">
+            <RevealFx translateY="8">
+              <Heading variant="heading-strong-xl" align="center">
+                How It Works
+              </Heading>
+            </RevealFx>
+            <RevealFx translateY="12" delay={0.1}>
+              <Text variant="body-default-m" onBackground="neutral-weak" align="center">
+                Get financing in 4 simple steps
+              </Text>
+            </RevealFx>
+          </Column>
+
+          <div className={styles.stepsGrid}>
+            {steps.map((step, index) => (
+              <RevealFx key={step.title} translateY="16" delay={index * 0.1}>
                 <Column
                   gap="12"
-                  padding="24"
-                  radius="l"
-                  border="neutral-alpha-weak"
-                  background="surface"
+                  padding="16"
                   horizontal="center"
                   align="center"
                   fillWidth
-                  className="card"
                 >
                   <Flex
-                    width="48"
-                    height="48"
-                    radius="m"
-                    background="brand-alpha-weak"
+                    width="40"
+                    height="40"
+                    radius="full"
+                    background="brand-strong"
                     horizontal="center"
                     vertical="center"
                   >
-                    <Icon
-                      name={feature.icon}
-                      size="m"
-                      onBackground="brand-medium"
-                    />
+                    <Text variant="heading-strong-s" style={{ color: "white" }}>
+                      {step.number}
+                    </Text>
                   </Flex>
                   <Column gap="4" horizontal="center" align="center">
-                    <Text variant="heading-strong-s">{feature.title}</Text>
-                    <Text variant="body-default-s" onBackground="neutral-weak" align="center">
-                      {feature.description}
+                    <Text variant="heading-strong-s">{step.title}</Text>
+                    <Text variant="body-default-xs" onBackground="neutral-weak" align="center">
+                      {step.description}
                     </Text>
                   </Column>
                 </Column>
@@ -196,49 +265,49 @@ export default function ApplyPage() {
         direction="column"
         horizontal="center"
         paddingX="l"
-        paddingY="xl"
+        paddingY="l"
         background="neutral-alpha-weak"
       >
-        <Column maxWidth="l" fillWidth gap="32">
-          <Column horizontal="center" gap="12">
+        <Column maxWidth="l" fillWidth gap="24">
+          <Column horizontal="center" gap="8">
             <RevealFx translateY="8">
-              <Heading variant="display-strong-m" align="center">
+              <Heading variant="heading-strong-xl" align="center">
                 Financing Options
               </Heading>
             </RevealFx>
             <RevealFx translateY="12" delay={0.1}>
-              <Text variant="body-default-l" onBackground="neutral-weak" align="center">
-                Choose the financing option that best fits your needs
+              <Text variant="body-default-m" onBackground="neutral-weak" align="center">
+                Choose the option that best fits your needs
               </Text>
             </RevealFx>
           </Column>
 
-          <div className="grid-cards-3">
+          <div className={styles.loanTypesGrid}>
             {loanTypes.map((type, index) => (
               <RevealFx key={type.title} translateY="16" delay={index * 0.1}>
                 <Column
-                  gap="16"
-                  padding="32"
+                  gap="12"
+                  padding="24"
                   radius="l"
                   background="page"
                   border="neutral-alpha-weak"
                   fillWidth
-                  className="card"
+                  className={styles.loanCard}
                 >
-                  <Text style={{ fontSize: "2.5rem" }}>{type.icon}</Text>
-                  <Column gap="8">
+                  <Text style={{ fontSize: "2rem" }}>{type.icon}</Text>
+                  <Column gap="4">
                     <Text variant="heading-strong-m">{type.title}</Text>
-                    <Text variant="body-default-m" onBackground="neutral-weak">
+                    <Text variant="body-default-s" onBackground="neutral-weak">
                       {type.description}
                     </Text>
                   </Column>
                   <Row
-                    padding="12"
-                    radius="m"
+                    padding="8"
+                    radius="s"
                     background="brand-alpha-weak"
                     horizontal="center"
                   >
-                    <Text variant="label-strong-m" onBackground="brand-medium">
+                    <Text variant="label-strong-s" onBackground="brand-medium">
                       {type.amount}
                     </Text>
                   </Row>
@@ -249,143 +318,29 @@ export default function ApplyPage() {
         </Column>
       </Flex>
 
-      {/* How It Works */}
+      {/* FAQ */}
       <Flex
         as="section"
         fillWidth
         direction="column"
         horizontal="center"
         paddingX="l"
-        paddingY="xl"
+        paddingY="l"
       >
-        <Column maxWidth="l" fillWidth gap="32">
-          <Column horizontal="center" gap="12">
+        <Column maxWidth="m" fillWidth gap="24">
+          <Column horizontal="center" gap="8">
             <RevealFx translateY="8">
-              <Heading variant="display-strong-m" align="center">
-                How It Works
-              </Heading>
-            </RevealFx>
-            <RevealFx translateY="12" delay={0.1}>
-              <Text variant="body-default-l" onBackground="neutral-weak" align="center">
-                Get financing in 4 simple steps
-              </Text>
-            </RevealFx>
-          </Column>
-
-          <Row gap="24" wrap horizontal="center">
-            {steps.map((step, index) => (
-              <RevealFx key={step.title} translateY="16" delay={index * 0.1}>
-                <Column
-                  gap="16"
-                  padding="24"
-                  horizontal="center"
-                  align="center"
-                  style={{ width: "200px" }}
-                >
-                  <Flex
-                    width="48"
-                    height="48"
-                    radius="full"
-                    background="brand-strong"
-                    horizontal="center"
-                    vertical="center"
-                  >
-                    <Text variant="heading-strong-m" style={{ color: "white" }}>
-                      {step.number}
-                    </Text>
-                  </Flex>
-                  <Column gap="4" horizontal="center" align="center">
-                    <Text variant="heading-strong-s">{step.title}</Text>
-                    <Text variant="body-default-s" onBackground="neutral-weak" align="center">
-                      {step.description}
-                    </Text>
-                  </Column>
-                </Column>
-              </RevealFx>
-            ))}
-          </Row>
-        </Column>
-      </Flex>
-
-      {/* Application Form */}
-      <Flex
-        as="section"
-        id="form"
-        fillWidth
-        direction="column"
-        horizontal="center"
-        paddingX="l"
-        paddingY="xl"
-        background="neutral-alpha-weak"
-      >
-        <Column maxWidth="m" fillWidth gap="32">
-          <Column horizontal="center" gap="12">
-            <RevealFx translateY="8">
-              <Heading variant="display-strong-m" align="center">
-                Apply Now
-              </Heading>
-            </RevealFx>
-            <RevealFx translateY="12" delay={0.1}>
-              <Text variant="body-default-l" onBackground="neutral-weak" align="center">
-                Fill out the form below to start your application
-              </Text>
-            </RevealFx>
-          </Column>
-
-          <RevealFx translateY="16" delay={0.2}>
-            <Card
-              padding="32"
-              radius="l"
-              background="page"
-              border="neutral-alpha-weak"
-              fillWidth
-            >
-              <LoanInquiryForm />
-            </Card>
-          </RevealFx>
-        </Column>
-      </Flex>
-
-      {/* FAQ Preview */}
-      <Flex
-        as="section"
-        fillWidth
-        direction="column"
-        horizontal="center"
-        paddingX="l"
-        paddingY="xl"
-      >
-        <Column maxWidth="m" fillWidth gap="32">
-          <Column horizontal="center" gap="12">
-            <RevealFx translateY="8">
-              <Heading variant="display-strong-m" align="center">
+              <Heading variant="heading-strong-xl" align="center">
                 Frequently Asked Questions
               </Heading>
             </RevealFx>
           </Column>
 
-          <Column gap="16">
-            {[
-              {
-                q: "What documents do I need?",
-                a: "You'll need a valid IC, proof of income (payslip or bank statement), and a copy of your utility bill for address verification.",
-              },
-              {
-                q: "How long does approval take?",
-                a: "Most applications are reviewed within 24-48 hours. Once approved, funds can be disbursed within 1-3 business days.",
-              },
-              {
-                q: "What is the minimum income requirement?",
-                a: "We consider applications from individuals with a minimum monthly income of RM 1,500. Other factors may also be considered.",
-              },
-              {
-                q: "Can I apply if I have existing loans?",
-                a: "Yes, you can still apply. Our team will assess your debt-to-income ratio to determine your eligibility.",
-              },
-            ].map((faq, index) => (
+          <Column gap="12">
+            {faqs.map((faq, index) => (
               <RevealFx key={faq.q} translateY="12" delay={index * 0.1}>
                 <Card
-                  padding="24"
+                  padding="16"
                   radius="m"
                   border="neutral-alpha-weak"
                   fillWidth
@@ -395,7 +350,7 @@ export default function ApplyPage() {
                       <Icon name="helpCircle" size="s" onBackground="brand-medium" />
                       <Text variant="heading-strong-s">{faq.q}</Text>
                     </Row>
-                    <Text variant="body-default-m" onBackground="neutral-weak" style={{ marginLeft: "28px" }}>
+                    <Text variant="body-default-s" onBackground="neutral-weak" style={{ marginLeft: "28px" }}>
                       {faq.a}
                     </Text>
                   </Column>
