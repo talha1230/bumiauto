@@ -30,7 +30,18 @@
   width: 100%;
 }
 
-.quickFeatures > div {
+.featureItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.featureIcon {
+  flex-shrink: 0;
+}
+
+.featureText {
   min-width: 0;
 }
 
@@ -97,14 +108,17 @@
   }
 
   .quickFeatures {
-    grid-template-columns: 1fr;
-    gap: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
   }
 
-  .quickFeatures > div {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+  .featureItem {
+    width: 100%;
+    padding: 12px;
+    background: var(--neutral-alpha-weak);
+    border-radius: 12px;
   }
 
   .stepsGrid {

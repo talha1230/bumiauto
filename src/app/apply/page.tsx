@@ -32,7 +32,7 @@ const features = [
     description: "Get approved within 24-48 hours",
   },
   {
-    icon: "creditCard",
+    icon: "percent",
     title: "Competitive Rates",
     description: "Best rates tailored to you",
   },
@@ -154,7 +154,7 @@ export default function ApplyPage() {
             <RevealFx translateY="16" delay={0.3}>
               <div className={styles.quickFeatures}>
                 {features.map((feature) => (
-                  <Row key={feature.title} gap="8" vertical="center">
+                  <div key={feature.title} className={styles.featureItem}>
                     <Flex
                       width="32"
                       height="32"
@@ -162,16 +162,17 @@ export default function ApplyPage() {
                       background="brand-alpha-medium"
                       horizontal="center"
                       vertical="center"
+                      className={styles.featureIcon}
                     >
                       <Icon name={feature.icon} size="s" onBackground="brand-strong" />
                     </Flex>
-                    <Column gap="2">
+                    <Column gap="2" className={styles.featureText}>
                       <Text variant="label-strong-s">{feature.title}</Text>
                       <Text variant="body-default-xs" onBackground="neutral-weak">
                         {feature.description}
                       </Text>
                     </Column>
-                  </Row>
+                  </div>
                 ))}
               </div>
             </RevealFx>
