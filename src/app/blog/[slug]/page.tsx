@@ -69,7 +69,13 @@ async function incrementViewCount(postId: string) {
   try {
     const supabase = await createAdminSupabaseClient();
 
-    await supabase.rpc("increment_view_count", { post_id: postId });
+    // Try to use the RPC function
+    const { error: rpcError } = await supabase.rpc("increment_view_count", { post_id: postId });
+    
+    if (rpcError) {
+      // If RPC fails, log warning (function might not exist yet)
+      console.warn("Could not increment view count:", rpcError.message);
+    }
   } catch (error) {
     // Silently fail - view count is not critical
     console.error("Error incrementing view count:", error);
