@@ -1,6 +1,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import { createServerSupabaseClient } from "@/lib/supabase";
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,6 +15,31 @@ export async function POST(request: NextRequest) {
         { error: "Missing required fields" },
         { status: 400 }
       );
+    }
+
+    // Save to Supabase
+    try {
+      const supabase = await createServerSupabaseClient();
+      const { error: dbError } = await supabase
+        .from("loan_inquiries")
+        .insert({
+          full_name: fullName,
+          phone,
+          email,
+          loan_type: loanType,
+          loan_amount: loanAmount ? parseFloat(loanAmount) : null,
+          monthly_income: monthlyIncome ? parseFloat(monthlyIncome) : null,
+          message: message || null,
+          status: "pending",
+        });
+
+      if (dbError) {
+        console.error("Error saving loan inquiry to Supabase:", dbError);
+        // Continue with email even if DB save fails
+      }
+    } catch (dbError) {
+      console.error("Error connecting to Supabase:", dbError);
+      // Continue with email even if DB save fails
     }
 
     // Format loan type for display

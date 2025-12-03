@@ -29,11 +29,16 @@ const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
       const checkRouteEnabled = () => {
         if (!pathname) return false;
 
+        // Always allow admin routes (auth handled by middleware)
+        if (pathname.startsWith("/admin")) {
+          return true;
+        }
+
         if (pathname in routes) {
           return routes[pathname as keyof typeof routes];
         }
 
-        const dynamicRoutes = ["/blog", "/work"] as const;
+        const dynamicRoutes = ["/blog", "/work", "/services"] as const;
         for (const route of dynamicRoutes) {
           if (pathname?.startsWith(route) && routes[route]) {
             return true;
