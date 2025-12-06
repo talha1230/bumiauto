@@ -12,8 +12,11 @@ import {
   Meta,
   RevealFx,
 } from "@once-ui-system/core";
-import { Footer, Header, RouteGuard, Providers, WhatsAppButton } from "@/components";
+import { Footer, Header, RouteGuard, Providers, WhatsAppButton, MaintenanceWrapper } from "@/components";
 import { baseURL, effects, fonts, style, dataStyle, home } from "@/resources";
+
+// Set to true to enable maintenance mode
+const MAINTENANCE_MODE = true;
 
 export async function generateMetadata() {
   return Meta.generate({
@@ -155,22 +158,24 @@ export default async function RootLayout({
             />
           </RevealFx>
           <Flex fillWidth minHeight="16" s={{ hide: true }} />
-          <Header />
-          <Flex 
-            zIndex={0} 
-            fillWidth 
-            paddingX="l" 
-            paddingY="xl"
-            horizontal="center" 
-            flex={1}
-            style={{ width: "100%", maxWidth: "100vw", overflowX: "hidden" }}
-          >
-            <Flex horizontal="center" fillWidth minHeight="0" style={{ width: "100%", maxWidth: "100%" }}>
-              <RouteGuard>{children}</RouteGuard>
+          <MaintenanceWrapper enabled={MAINTENANCE_MODE}>
+            <Header />
+            <Flex 
+              zIndex={0} 
+              fillWidth 
+              paddingX="l" 
+              paddingY="xl"
+              horizontal="center" 
+              flex={1}
+              style={{ width: "100%", maxWidth: "100vw", overflowX: "hidden" }}
+            >
+              <Flex horizontal="center" fillWidth minHeight="0" style={{ width: "100%", maxWidth: "100%" }}>
+                <RouteGuard>{children}</RouteGuard>
+              </Flex>
             </Flex>
-          </Flex>
-          <Footer />
-          <WhatsAppButton />
+            <Footer />
+            <WhatsAppButton />
+          </MaintenanceWrapper>
         </Column>
       </Providers>
     </Flex>
