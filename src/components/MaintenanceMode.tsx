@@ -1,10 +1,20 @@
 "use client";
 
-import { useState } from "react";
-import { Column, Flex, Heading, Text, Icon, Input, Button } from "@once-ui-system/core";
+import { useState, useEffect } from "react";
+import { 
+  Column, 
+  Flex, 
+  Heading, 
+  Text, 
+  Icon, 
+  Input, 
+  Button, 
+  Background 
+} from "@once-ui-system/core";
 
-// Preview access code - change this to your desired code
-const PREVIEW_ACCESS_CODE = "demo2025";
+// Preview access code configuration
+const PREVIEW_ACCESS_CODE = "bumiauto2025";
+const ACCESS_STORAGE_KEY = "preview_access";
 
 interface MaintenanceModeProps {
   onAccessGranted: () => void;
@@ -15,233 +25,132 @@ export function MaintenanceMode({ onAccessGranted }: MaintenanceModeProps) {
   const [accessCode, setAccessCode] = useState("");
   const [error, setError] = useState("");
 
+  // Optional: Check if they already have access on mount to prevent flicker
+  useEffect(() => {
+    const hasAccess = localStorage.getItem(ACCESS_STORAGE_KEY);
+    if (hasAccess === "granted") {
+      onAccessGranted();
+    }
+  }, [onAccessGranted]);
+
   const handleAccessSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (accessCode === PREVIEW_ACCESS_CODE) {
-      localStorage.setItem("preview_access", "granted");
+      localStorage.setItem(ACCESS_STORAGE_KEY, "granted");
       onAccessGranted();
     } else {
       setError("Invalid access code");
+      // Clear error after 3 seconds so the user isn't staring at their failure forever
+      setTimeout(() => setError(""), 3000);
     }
   };
 
   return (
     <Flex
       fillWidth
+      fillHeight
       direction="column"
       horizontal="center"
       vertical="center"
+      background="surface"
       padding="l"
-      style={{ 
-        minHeight: "100vh",
-        position: "relative",
-        overflow: "hidden",
-      }}
+      style={{ minHeight: "100vh", position: "relative" }}
     >
-      {/* Decorative background elements */}
+      {/* Background gradient */}
       <div
         style={{
           position: "absolute",
-          top: "-20%",
-          right: "-10%",
-          width: "min(500px, 80vw)",
-          height: "min(500px, 80vw)",
-          borderRadius: "50%",
-          background: "linear-gradient(135deg, var(--color-brand-alpha-weak) 0%, transparent 70%)",
-          opacity: 0.5,
-          pointerEvents: "none",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          bottom: "-15%",
-          left: "-10%",
-          width: "min(400px, 60vw)",
-          height: "min(400px, 60vw)",
-          borderRadius: "50%",
-          background: "linear-gradient(315deg, var(--color-brand-alpha-weak) 0%, transparent 70%)",
-          opacity: 0.3,
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: "radial-gradient(ellipse at top, var(--color-brand-alpha-weak) 0%, transparent 50%)",
+          opacity: 0.4,
           pointerEvents: "none",
         }}
       />
 
       <Column
-        gap="24"
+        fillWidth
+        gap="32"
+        padding="40"
+        radius="xl"
+        border="neutral-alpha-weak"
+        background="surface"
         horizontal="center"
         align="center"
-        padding="l"
-        style={{
-          position: "relative",
+        style={{ 
+          maxWidth: "480px", 
+          position: "relative", 
           zIndex: 1,
-          width: "100%",
-          maxWidth: "480px",
+          boxShadow: "var(--shadow-l)" // Use system variables, not raw rgba
         }}
       >
-        {/* Animated Icon */}
-        <Flex
-          width={80}
-          height={80}
-          radius="l"
-          background="brand-alpha-weak"
-          horizontal="center"
-          vertical="center"
-          style={{
-            animation: "pulse 2s ease-in-out infinite",
-          }}
-        >
-          <Icon name="tool" size="l" onBackground="brand-medium" />
-        </Flex>
-
-        {/* Main Message */}
-        <Column gap="12" horizontal="center">
-          <Heading 
-            variant="display-strong-m" 
-            align="center"
-            style={{ 
-              fontSize: "clamp(1.75rem, 5vw, 2.5rem)",
-              lineHeight: 1.2,
-            }}
-          >
-            We&apos;re Under Maintenance
-          </Heading>
-
-          <Text
-            variant="body-default-l"
-            onBackground="neutral-weak"
-            align="center"
-            style={{ 
-              maxWidth: "380px",
-              fontSize: "clamp(0.9rem, 2.5vw, 1.1rem)",
-            }}
-          >
-            We&apos;re currently making improvements to serve you better. 
-            Please check back soon!
-          </Text>
-        </Column>
-
-        {/* Status Badge */}
-        <Flex
-          paddingX="20"
-          paddingY="12"
-          radius="full"
-          background="surface"
-          border="neutral-alpha-weak"
-          gap="8"
-          vertical="center"
-          style={{
-            backdropFilter: "blur(8px)",
-          }}
-        >
+        {/* Header Section */}
+        <Column gap="16" horizontal="center" align="center">
           <Flex
-            width={8}
-            height={8}
+            padding="16"
             radius="full"
-            style={{
-              backgroundColor: "var(--color-brand-medium)",
-              animation: "blink 1.5s ease-in-out infinite",
-            }}
-          />
-          <Text variant="body-default-s">
-            Expected to be back shortly
-          </Text>
-        </Flex>
+            background="brand-alpha-weak"
+            border="brand-alpha-medium"
+          >
+            <Icon name="tool" size="l" onBackground="brand-medium" />
+          </Flex>
 
-        {/* Contact Info */}
-        <Column 
-          gap="16" 
-          horizontal="center" 
-          marginTop="8"
-          padding="20"
-          radius="l"
-          background="surface"
-          border="neutral-alpha-weak"
-          fillWidth
-          style={{
-            backdropFilter: "blur(8px)",
-          }}
-        >
-          <Text variant="label-default-s" onBackground="neutral-weak">
-            Need urgent assistance?
-          </Text>
-          <Column gap="12" horizontal="center" fillWidth>
-            <a 
-              href="https://wa.me/60123456789" 
-              style={{ textDecoration: "none", width: "100%" }}
-            >
-              <Flex 
-                gap="8" 
-                vertical="center" 
-                horizontal="center"
-                paddingY="8"
-                paddingX="16"
-                radius="m"
-                fillWidth
-                style={{
-                  transition: "background 0.2s ease",
-                  cursor: "pointer",
-                }}
-              >
-                <Icon name="whatsapp" size="s" onBackground="brand-medium" />
-                <Text variant="body-default-s">+60 12-345 6789</Text>
-              </Flex>
-            </a>
-            <a 
-              href="mailto:info@bumiauto.com.my" 
-              style={{ textDecoration: "none", width: "100%" }}
-            >
-              <Flex 
-                gap="8" 
-                vertical="center" 
-                horizontal="center"
-                paddingY="8"
-                paddingX="16"
-                radius="m"
-                fillWidth
-                style={{
-                  transition: "background 0.2s ease",
-                  cursor: "pointer",
-                }}
-              >
-                <Icon name="email" size="s" onBackground="brand-medium" />
-                <Text variant="body-default-s">info@bumiauto.com.my</Text>
-              </Flex>
-            </a>
+          <Column gap="8" horizontal="center">
+            <Heading variant="display-strong-s" align="center">
+              System Maintenance
+            </Heading>
+            <Text variant="body-default-l" onBackground="neutral-weak" align="center">
+              BumiAuto is currently undergoing scheduled upgrades.
+            </Text>
           </Column>
         </Column>
 
-        {/* Admin Preview Access */}
-        {!showAccessForm ? (
-          <Button
-            variant="tertiary"
-            size="s"
-            onClick={() => setShowAccessForm(true)}
-            style={{ 
-              marginTop: "16px", 
-              opacity: 0.5,
-              fontSize: "0.75rem",
-            }}
-          >
-            Admin Preview Access
-          </Button>
-        ) : (
-          <Column
-            gap="16"
-            padding="20"
-            radius="l"
-            border="neutral-alpha-weak"
-            background="surface"
-            fillWidth
-            style={{ 
-              marginTop: "8px",
-              backdropFilter: "blur(8px)",
-            }}
-          >
-            <Text variant="label-strong-s" onBackground="neutral-weak">
-              Enter Preview Access Code
-            </Text>
-            <form onSubmit={handleAccessSubmit}>
-              <Column gap="12">
+        {/* Status Pill */}
+        <Flex
+          paddingX="12"
+          paddingY="4"
+          radius="full"
+          border="neutral-alpha-medium"
+          background="neutral-alpha-weak"
+          gap="8"
+          vertical="center"
+        >
+          <div style={{ 
+            width: 8, 
+            height: 8, 
+            borderRadius: '50%', 
+            backgroundColor: 'var(--color-warning-medium)' 
+          }} />
+          <Text variant="body-default-s" onBackground="neutral-medium">
+            Estimated return: shortly
+          </Text>
+        </Flex>
+
+        {/* Admin Access Section - Moved Higher */}
+        <Column fillWidth gap="16" style={{ marginTop: "8px" }}>
+          {!showAccessForm ? (
+            <Column fillWidth gap="8" horizontal="center">
+              <Text variant="label-default-s" onBackground="neutral-weak">
+                Admin Access
+              </Text>
+              <Button
+                variant="secondary"
+                size="m"
+                onClick={() => setShowAccessForm(true)}
+                fillWidth
+                style={{ maxWidth: "240px" }}
+              >
+                Enter Access Code
+              </Button>
+            </Column>
+          ) : (
+            <form onSubmit={handleAccessSubmit} style={{ width: '100%' }}>
+              <Column gap="12" fillWidth>
+                <Text variant="label-strong-s" onBackground="neutral-medium" align="center">
+                  Admin Access
+                </Text>
                 <Input
                   id="access-code"
                   type="password"
@@ -250,21 +159,24 @@ export function MaintenanceMode({ onAccessGranted }: MaintenanceModeProps) {
                     setAccessCode(e.target.value);
                     setError("");
                   }}
-                  placeholder="Access code"
+                  placeholder="Enter access code"
+                  autoFocus
                 />
+                
                 {error && (
-                  <Text variant="body-default-xs" style={{ color: "var(--color-danger-medium)" }}>
+                  <Text variant="body-default-xs" onBackground="danger-medium" align="center">
                     {error}
                   </Text>
                 )}
+                
                 <Flex gap="8">
-                  <Button type="submit" variant="primary" size="s" fillWidth>
-                    Access Site
+                  <Button type="submit" variant="primary" size="m" fillWidth>
+                    Unlock Site
                   </Button>
                   <Button
                     type="button"
-                    variant="tertiary"
-                    size="s"
+                    variant="secondary"
+                    size="m"
                     onClick={() => {
                       setShowAccessForm(false);
                       setAccessCode("");
@@ -276,42 +188,42 @@ export function MaintenanceMode({ onAccessGranted }: MaintenanceModeProps) {
                 </Flex>
               </Column>
             </form>
-          </Column>
-        )}
+          )}
+        </Column>
 
-        {/* Brand */}
-        <Flex gap="8" vertical="center" marginTop="24">
-          <Text
-            variant="heading-strong-m"
-            onBackground="brand-medium"
-          >
-            BumiAuto
+        {/* Divider */}
+        <div style={{ 
+          width: "100%", 
+          height: "1px", 
+          background: "var(--color-neutral-alpha-weak)" 
+        }} />
+
+        {/* Contact Links */}
+        <Column fillWidth gap="12">
+          <Text variant="label-default-s" onBackground="neutral-weak" align="center">
+            Need urgent assistance?
           </Text>
-        </Flex>
-      </Column>
+          <Flex gap="12" horizontal="center" wrap>
+            <Button 
+              href="https://wa.me/60123456789" 
+              prefixIcon="whatsapp" 
+              variant="tertiary" 
+              size="m"
+            >
+              WhatsApp
+            </Button>
+            <Button 
+              href="mailto:info@bumiauto.com.my" 
+              prefixIcon="email" 
+              variant="tertiary" 
+              size="m"
+            >
+              Email Support
+            </Button>
+          </Flex>
+        </Column>
 
-      {/* CSS Animations */}
-      <style jsx global>{`
-        @keyframes pulse {
-          0%, 100% {
-            transform: scale(1);
-            opacity: 1;
-          }
-          50% {
-            transform: scale(1.05);
-            opacity: 0.9;
-          }
-        }
-        
-        @keyframes blink {
-          0%, 100% {
-            opacity: 1;
-          }
-          50% {
-            opacity: 0.4;
-          }
-        }
-      `}</style>
+      </Column>
     </Flex>
   );
 }
