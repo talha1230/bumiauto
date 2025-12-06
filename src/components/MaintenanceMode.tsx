@@ -13,7 +13,7 @@ import {
 } from "@once-ui-system/core";
 
 // Preview access code configuration
-const PREVIEW_ACCESS_CODE = "bumiauto2025";
+const PREVIEW_ACCESS_CODE = "demo2025";
 const ACCESS_STORAGE_KEY = "preview_access";
 
 interface MaintenanceModeProps {
